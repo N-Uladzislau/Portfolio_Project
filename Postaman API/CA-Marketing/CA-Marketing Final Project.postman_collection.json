@@ -1,0 +1,2948 @@
+{
+	"info": {
+		"_postman_id": "fb5f31d4-7553-4b11-abe6-6030a45cbe5c",
+		"name": "CA-Marketing Final Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23272772"
+	},
+	"item": [
+		{
+			"name": "Positive",
+			"item": [
+				{
+					"name": "POST addresses",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" pm.environment.clear();",
+									"",
+									"// pm.environment.unset(\"ID\");",
+									"// pm.environment.unset(\"company\");",
+									"// pm.environment.unset(\"zipCode\");",
+									"// pm.environment.unset(\"addressLine1\");",
+									"// pm.environment.unset(\"addressLine2\");",
+									"// pm.environment.unset(\"firstName\");",
+									"// pm.environment.unset(\"lastName\");",
+									"// pm.environment.unset(\"city\");",
+									"// pm.environment.unset(\"country\");",
+									"// pm.environment.unset(\"phoneNumber\");",
+									"// pm.environment.unset(\"subdivision\");",
+									"",
+									"//returns a random integer from 10000 to 90000 with 5 digits ",
+									"pm.environment.set(\"ZIPCODE\", Math.floor(Math.random()*90000) + 10000);",
+									"",
+									"//returns a random integer from 100 to 900 with 3 digits",
+									"pm.environment.set(\"ADDRESSLINE2\", Math.floor(Math.random()*900) + 100);",
+									"",
+									"const stateAbbreviations = [",
+									" 'AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FM','FL','GA',",
+									" 'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MH','MD','MA',",
+									" 'MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',",
+									" 'MP','OH','OK','OR','PW','PA','PR','RI','SC','SD','TN','TX','UT',",
+									" 'VT','VI','VA','WA','WV','WI','WY'",
+									"];",
+									"const randomState = stateAbbreviations[Math.floor(Math.random() * stateAbbreviations.length)];",
+									"pm.environment.set(\"SUBDIVISION\", randomState);",
+									"",
+									"// Using Faker lib https://learning.postman.com/docs/writing-scripts/script-references/variables-list/",
+									"let fName = pm.variables.replaceIn('{{$randomFirstName}}')",
+									"pm.environment.set(\"FIRSTNAME\", fName);",
+									"",
+									"let lName = pm.variables.replaceIn('{{$randomLastName}}')",
+									"pm.environment.set(\"LASTNAME\", lName);",
+									"",
+									"let co = pm.variables.replaceIn('{{$randomCompanyName}}')",
+									"pm.environment.set(\"COMPANY\", co);",
+									"",
+									"let addrLn1 = pm.variables.replaceIn('{{$randomStreetAddress}}')",
+									"pm.environment.set(\"ADDRESSLINE1\", addrLn1);",
+									"",
+									"let cty = pm.variables.replaceIn('{{$randomCity}}')",
+									"pm.environment.set(\"CITY\", cty);",
+									"",
+									"let cntry = pm.variables.replaceIn('{{$randomCountry}}')",
+									"pm.environment.set(\"COUNTRY\", cntry);",
+									"",
+									"let phoneNum = pm.variables.replaceIn('{{$randomPhoneNumber}}')",
+									"pm.environment.set(\"PHONENUMBER\", phoneNum);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(responseCode.code === 200) {",
+									"    tests[\"Backend is available, response code is 200\"] = true;",
+									"} else if (responseCode.code === 201) {",
+									"    tests[\"Backend is available, response code is 200\"] = true;",
+									"} else if (responseCode.code === 401) {",
+									"    tests[\"Not authorised, Check access token or Log in\"] = false;",
+									"} else if (responseCode.code === 403) {",
+									"    tests[\"Forbiden\"] = false;",
+									"} else if (responseCode.code === 404) {",
+									"    tests[\"Not Found. Check if you made correct request\"] = false;",
+									"} else if (responseCode.code === 422) {",
+									"    tests[\"The instance is not valid\"] = false;",
+									"} else {",
+									"    tests[\"Something went wrong. Check response body\"] = false;",
+									"}",
+									"",
+									"// Respomse Time ",
+									"tests['Response latency is acceptable'] = responseTime < 1000;",
+									"",
+									"",
+									"// Test response Size",
+									"pm.test(\"Response Size is less than 2KB\", function () {",
+									"    pm.expect(pm.response.responseSize).to.be.below(2048);",
+									"});",
+									"",
+									"// set id for ENV",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"ID\", jsonData.id);",
+									"",
+									"// Equal compair ID ",
+									"pm.test(\"ID is correct\", function () {",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"ID\"));",
+									"});",
+									"",
+									"// Assert status ",
+									"pm.test(\"Resopnse status has to be 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//  Response JSON",
+									"pm.test(\"Response json has to be OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.json;  ",
+									"});",
+									"",
+									"// Check Cookie Response",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;",
+									"});",
+									"",
+									"",
+									"// Check response Header",
+									"pm.test(\"Header is correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response should be okay to process\", function () {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Mrp1k_VPWIJn4zez74a-qS0kOftZUjf6m_4qiruuqeU.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIxLTEwLTE1VDA2OjMzOjAzLjUzMFoiLCJ1aWQiOiJhY2M4ZmM5ZS05MTBiLTRhMGQtOGEzZS00M2I5MDUyNDE3YTkiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6ImFkZmQ4OWNhLTRlNjgtNDdjNi1hNzkwLWM5NDBkNmU5M2M5NyIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMS0xMC0xNVQxMDozMzowMy41MzBaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"address\": {\r\n\t\t\"fullName\": {\r\n\t\t\t\"firstName\": \"{{FIRSTNAME}}\",\r\n\t\t\t\"lastName\": \"{{LASTNAME}}\"\r\n\t\t},\r\n\t\t\"company\": \"{{COMPANY}}\",\r\n\t\t\"taxInfo\": {\r\n\t\t\t\"id\": null,\r\n\t\t\t\"type\": null\r\n\t\t},\r\n\t\t\"addressLine1\": \"{{ADDRESSLINE1}}\",\r\n\t\t\"addressLine2\": \"{{ADDRESSLINE2}}\",\r\n\t\t\"street\": {\r\n\t\t\t\"name\": null,\r\n\t\t\t\"number\": null\r\n\t\t},\r\n\t\t\"city\": \"{{CITY}}\",\r\n\t\t\"country\": \"{{COUNTRY}}\",\r\n\t\t\"subdivision\": \"{{SUBDIVISION}}\",\r\n\t\t\"zipCode\": \"{{ZIPCODE}}\",\r\n\t\t\"phoneNumber\": \"{{PHONENUMBER}}\"\r\n\t},\r\n\t\"setAsDefault\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST_Make default address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(responseCode.code === 200) {\r",
+									"    tests[\"Backend is available, response code is 200\"] = true;\r",
+									"} else if (responseCode.code === 401) {\r",
+									"    tests[\"Not authorised, Check access token or Log in\"] = false;\r",
+									"} else if (responseCode.code === 403) {\r",
+									"    tests[\"Forbiden\"] = false;\r",
+									"} else if (responseCode.code === 404) {\r",
+									"    tests[\"Not Found. Check if you made correct request\"] = false;\r",
+									"} else if (responseCode.code === 422) {\r",
+									"    tests[\"The instance is not valid\"] = false;\r",
+									"} else {\r",
+									"    tests[\"Something went wrong. Check response body\"] = false;\r",
+									"}\r",
+									"\r",
+									"// Response Time \r",
+									"pm.test(\"Response time is less than 1000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"// Response Size\r",
+									"pm.test(\"Response Size is less than 2KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(2048);\r",
+									"});\r",
+									"\r",
+									"// Response Header tests \r",
+									"pm.test(\"Response Header is present and correct\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"});\r",
+									"\r",
+									"// Response Address Updated OK\r",
+									"pm.test(\"Address has been updated, OK\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"    pm.response.to.have.jsonBody({});\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "Authorization",
+								"value": "Mrp1k_VPWIJn4zez74a-qS0kOftZUjf6m_4qiruuqeU.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIxLTEwLTE1VDA2OjMzOjAzLjUzMFoiLCJ1aWQiOiJhY2M4ZmM5ZS05MTBiLTRhMGQtOGEzZS00M2I5MDUyNDE3YTkiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6ImFkZmQ4OWNhLTRlNjgtNDdjNi1hNzkwLWM5NDBkNmU5M2M5NyIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMS0xMC0xNVQxMDozMzowMy41MzBaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.92 Safari/537.36"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{ID}}\"\r\n}"
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/default",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								"default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(responseCode.code === 200) {",
+									"    tests[\"Backend is available, response code is 200\"] = true;",
+									"} else if (responseCode.code === 401) {",
+									"    tests[\"Not authorised, Check access token or Log in\"] = false;",
+									"} else if (responseCode.code === 403) {",
+									"    tests[\"Forbiden\"] = false;",
+									"} else if (responseCode.code === 404) {",
+									"    tests[\"Not Found. Check if you made correct request\"] = false;",
+									"} else if (responseCode.code === 422) {",
+									"    tests[\"The instance is not valid\"] = false;",
+									"} else {",
+									"    tests[\"Something went wrong. Check response body\"] = false;",
+									"}",
+									"",
+									"// Response Time ",
+									"pm.test(\"Response time is less than 1000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+									"});",
+									"",
+									"// Response Size ",
+									"pm.test(\"Response time is less than 10KB\", function () {",
+									"    pm.expect(pm.response.responseSize).to.be.below(10000);",
+									"});",
+									"",
+									"// Response JSON OK",
+									"pm.test(\"Response should be okay to process\", function () {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"// New Address is contain ",
+									"pm.test(\"New ID is in response\", function () {",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"ID\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"ZIPCODE\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"ADDRESSLINE2\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"SUBDIVISION\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"FIRSTNAME\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"LASTNAME\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"COMPANY\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"ADDRESSLINE1\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"CITY\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"COUNTRY\"));",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"PHONENUMBER\"));",
+									"});",
+									"",
+									"// Test Header ",
+									"pm.test(\"Response Header is present and correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");",
+									"});",
+									"",
+									"// Response for Body with ENV ",
+									"pm.test(\"New ID is in response\", function () {",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"ID\"));",
+									"});",
+									"",
+									"// Check Cookie Response",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Mrp1k_VPWIJn4zez74a-qS0kOftZUjf6m_4qiruuqeU.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIxLTEwLTE1VDA2OjMzOjAzLjUzMFoiLCJ1aWQiOiJhY2M4ZmM5ZS05MTBiLTRhMGQtOGEzZS00M2I5MDUyNDE3YTkiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6ImFkZmQ4OWNhLTRlNjgtNDdjNi1hNzkwLWM5NDBkNmU5M2M5NyIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMS0xMC0xNVQxMDozMzowMy41MzBaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(responseCode.code === 200) {",
+									"    tests[\"Backend is available, response code is 200\"] = true;",
+									"} else if (responseCode.code === 401) {",
+									"    tests[\"Not authorised, Check access token or Log in\"] = false;",
+									"} else if (responseCode.code === 403) {",
+									"    tests[\"Forbiden\"] = false;",
+									"} else if (responseCode.code === 404) {",
+									"    tests[\"Not Found. Check if you made correct request\"] = false;",
+									"} else if (responseCode.code === 422) {",
+									"    tests[\"The instance is not valid\"] = false;",
+									"} else {",
+									"    tests[\"Something went wrong. Check response body\"] = false;",
+									"}",
+									"",
+									"// Test Time ",
+									"tests[\"Response Time Acceptable\"] = responseTime < 500;",
+									"",
+									"// Test Size",
+									"pm.test(\"Response Size is less than 2KB\", function () {",
+									"    pm.expect(pm.response.responseSize).to.be.below(2048);",
+									"});",
+									"",
+									"// Test JSON",
+									"pm.test(\"Response should be okay to process\", function () {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"// Test ID is Equal ",
+									"pm.test(\"ID is correct\", function () {",
+									"    const jsonData = pm.response.json(); ",
+									"    pm.expect(jsonData.address.id).to.eql(pm.environment.get(\"ID\"));",
+									"});",
+									"",
+									"",
+									"// Equal compair body",
+									"pm.test(\"Entire response is correct\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.address.id).to.eql(pm.environment.get(\"ID\"));",
+									"    pm.expect(jsonData.address.fullName.firstName).to.eql(pm.environment.get(\"FIRSTNAME\"));",
+									"    pm.expect(jsonData.address.fullName.lastName).to.eql(pm.environment.get(\"LASTNAME\"));",
+									"    pm.expect(jsonData.address.country).to.eql(pm.environment.get(\"COUNTRY\"));",
+									"    pm.expect(jsonData.address.subdivision).to.eql(pm.environment.get(\"SUBDIVISION\"));",
+									"    pm.expect(jsonData.address.city).to.eql(pm.environment.get(\"CITY\"));",
+									"    pm.expect(jsonData.address.zipCode).to.eql('' + pm.environment.get(\"ZIPCODE\"));",
+									"    pm.expect(jsonData.address.phoneNumber).to.eql(pm.environment.get(\"PHONENUMBER\"));",
+									"    pm.expect(jsonData.address.company).to.eql(pm.environment.get(\"COMPANY\"));",
+									"    pm.expect(jsonData.address.addressLine1).to.eql(pm.environment.get(\"ADDRESSLINE1\"));",
+									"    pm.expect(jsonData.address.addressLine2).to.eql('' + pm.environment.get(\"ADDRESSLINE2\"));",
+									"});",
+									"",
+									"// Test TYPE OF ",
+									"pm.test(\"Response body should be in the correct format\", function() {",
+									"    let jsonResponse = pm.response.json();",
+									"    pm.expect(jsonResponse.address).to.be.a('object');",
+									"    pm.expect(jsonResponse.address.id).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.fullName).to.be.a('object');",
+									"    pm.expect(jsonResponse.address.fullName.firstName).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.fullName.lastName).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.country).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.subdivision).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.city).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.zipCode).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.phoneNumber).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.addressLine1).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.addressLine2).to.be.a('string');",
+									"    pm.expect(jsonResponse.isDefaultAddress).to.be.a('boolean');",
+									"});",
+									"",
+									"// Test Header ",
+									"pm.test(\"Response Header is present and correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");",
+									"});",
+									"",
+									"// Check Cookie Response",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Mrp1k_VPWIJn4zez74a-qS0kOftZUjf6m_4qiruuqeU.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIxLTEwLTE1VDA2OjMzOjAzLjUzMFoiLCJ1aWQiOiJhY2M4ZmM5ZS05MTBiLTRhMGQtOGEzZS00M2I5MDUyNDE3YTkiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6ImFkZmQ4OWNhLTRlNjgtNDdjNi1hNzkwLWM5NDBkNmU5M2M5NyIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMS0xMC0xNVQxMDozMzowMy41MzBaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch address",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.unset(\"ZIPCODE\");",
+									"pm.environment.unset(\"ADDRESSLINE2\");",
+									"pm.environment.unset(\"SUBDIVISION\");",
+									"pm.environment.unset(\"FIRSTNAME\");",
+									"pm.environment.unset(\"LASTNAME\");",
+									"pm.environment.unset(\"COMPANY\");",
+									"pm.environment.unset(\"ADDRESSLINE1\");",
+									"pm.environment.unset(\"CITY\");",
+									"pm.environment.unset(\"COUNTRY\");",
+									"pm.environment.unset(\"PHONENUMBER\");",
+									"// pm.environment.unset(\"subdivision\");",
+									"",
+									"//returns a random integer from 10000 to 90000 with 5 digits ",
+									"pm.environment.set(\"ZIPCODE\", Math.floor(Math.random()*90000) + 10000);",
+									"",
+									"//returns a random integer from 100 to 900 with 3 digits",
+									"pm.environment.set(\"ADDRESSLINE2\", Math.floor(Math.random()*900) + 100);",
+									"",
+									"const stateAbbreviations = [",
+									" 'AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FM','FL','GA',",
+									" 'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MH','MD','MA',",
+									" 'MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',",
+									" 'MP','OH','OK','OR','PW','PA','PR','RI','SC','SD','TN','TX','UT',",
+									" 'VT','VI','VA','WA','WV','WI','WY'",
+									"];",
+									"const randomState = stateAbbreviations[Math.floor(Math.random() * stateAbbreviations.length)];",
+									"pm.environment.set(\"SUBDIVISION\", randomState);",
+									"",
+									"",
+									"let fName = pm.variables.replaceIn('{{$randomFirstName}}')",
+									"pm.environment.set(\"FIRSTNAME\", fName);",
+									"",
+									"let lName = pm.variables.replaceIn('{{$randomLastName}}')",
+									"pm.environment.set(\"LASTNAME\", lName);",
+									"",
+									"let co = pm.variables.replaceIn('{{$randomCompanyName}}')",
+									"pm.environment.set(\"COMPANY\", co);",
+									"",
+									"let addrLn1 = pm.variables.replaceIn('{{$randomStreetAddress}}')",
+									"pm.environment.set(\"ADDRESSLINE1\", addrLn1);",
+									"",
+									"let cty = pm.variables.replaceIn('{{$randomCity}}')",
+									"pm.environment.set(\"CITY\", cty);",
+									"",
+									"let cntry = pm.variables.replaceIn('{{$randomCountry}}')",
+									"pm.environment.set(\"COUNTRY\", cntry);",
+									"",
+									"let phoneNum = pm.variables.replaceIn('{{$randomPhoneNumber}}')",
+									"pm.environment.set(\"PHONENUMBER\", phoneNum);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(responseCode.code === 200) {",
+									"    tests[\"Backend is available, response code is 200\"] = true;",
+									"} else if (responseCode.code === 401) {",
+									"    tests[\"Not authorised, Check access token or Log in\"] = false;",
+									"} else if (responseCode.code === 403) {",
+									"    tests[\"Forbiden\"] = false;",
+									"} else if (responseCode.code === 404) {",
+									"    tests[\"Not Found. Check if you made correct request\"] = false;",
+									"} else if (responseCode.code === 422) {",
+									"    tests[\"The instance is not valid\"] = false;",
+									"} else {",
+									"    tests[\"Something went wrong. Check response body\"] = false;",
+									"}",
+									"",
+									"// Test Time",
+									"pm.test(\"Response time is less than 1000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+									"});",
+									"",
+									"// Test Size ",
+									"pm.test(\"Resonse Size is less than 2KB\", function (){",
+									"        pm.expect(pm.response.responseTime).to.be.below(2048);",
+									"});",
+									"",
+									"// Test Header",
+									"pm.test(\"Response Header is present and correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");",
+									"});",
+									"",
+									"// Test JSON",
+									"// Response for id should contain {}",
+									"pm.test(\"Address has been updated, OK\", function () {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"    pm.response.to.have.jsonBody({});",
+									"});",
+									"",
+									"// Check Cookie Response",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Mrp1k_VPWIJn4zez74a-qS0kOftZUjf6m_4qiruuqeU.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIxLTEwLTE1VDA2OjMzOjAzLjUzMFoiLCJ1aWQiOiJhY2M4ZmM5ZS05MTBiLTRhMGQtOGEzZS00M2I5MDUyNDE3YTkiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6ImFkZmQ4OWNhLTRlNjgtNDdjNi1hNzkwLWM5NDBkNmU5M2M5NyIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMS0xMC0xNVQxMDozMzowMy41MzBaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "company",
+								"type": "text",
+								"value": "{{$randomCompanyName}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"address\": {\r\n\t\t\"id\": \"{{ID}}\",\r\n\t\t\"fullName\": {\r\n\t\t\t\"firstName\": \"{{FIRSTNAME}}\",\r\n\t\t\t\"lastName\": \"{{LASTNAME}}\"\r\n\t\t},\r\n\t\t\"company\": \"{{COMPANY}}\",\r\n\t\t\"taxInfo\": {\r\n\t\t\t\"id\": null,\r\n\t\t\t\"type\": null\r\n\t\t},\r\n\t\t\"addressLine1\": \"{{ADDRESSLINE1}}\",\r\n\t\t\"addressLine2\": \"{{ADDRESSLINE2}}\",\r\n\t\t\"street\": {\r\n\t\t\t\"name\": null,\r\n\t\t\t\"number\": null\r\n\t\t},\r\n\t\t\"city\": \"{{CITY}}\",\r\n\t\t\"country\": \"{{COUNTRY}}\",\r\n\t\t\"subdivision\": \"{{SUBDIVISION}}\",\r\n\t\t\"zipCode\": \"{{ZIPCODE}}\",\r\n\t\t\"phoneNumber\": \"{{PHONENUMBER}}\"\r\n\t},\r\n\t\"setAsDefault\": false,\r\n\t\"fieldMask\": {\r\n\t\t\"paths\": [\"fullName.firstName\", \"fullName.lastName\", \"company\", \"addressLine1\", \"addressLine2\", \"city\", \"country\", \"subdivision\", \"zipCode\", \"phoneNumber\", \"setAsDefault\"]\r\n\t}\r\n}"
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Updated addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"switch (responseCode.code) {",
+									"    case 200:",
+									"        tests[\"200 ok. The request has succeeded\"] = true;",
+									"        break;",
+									"    case 404:",
+									"        tests[\"404 Not found\"] = false;",
+									"        break;",
+									"    case 400:",
+									"        tests[\"400 Bad Request\"] = false;",
+									"        break;",
+									"    case 401:",
+									"        tests[\"401 BUnauthorized\"] = false;",
+									"        break;",
+									"    case 500:",
+									"        tests[\"500 Internal Server Error\"] = false;",
+									"        break;",
+									"    case 503:",
+									"        tests[\"503 Server unavailable\"] = false;",
+									"        break;",
+									"    case 502:",
+									"        tests[\"502 bad gateway\"] = false;",
+									"        break;",
+									"    case 599:",
+									"        tests[\"599 Network connect timeout error\"] = false;",
+									"        break;",
+									"    case 408:",
+									"        tests[\"408 Request is timeout\"] = false;",
+									"        break;",
+									"    default:",
+									"        tests[\"Sorry, we are out of\" + responseCode.code] = false;",
+									"}",
+									"",
+									"// Test Time ",
+									"tests[\"Response Time Acceptable\"] = responseTime < 500;",
+									"",
+									"// Test Size",
+									"pm.test(\"Response Size is less than 2KB\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2048);",
+									"});",
+									"",
+									"// Check changed values",
+									"pm.test(\"Check Company, ZipCode and AddressLine2\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.address.id).to.eql(pm.environment.get(\"ID\"));",
+									"    pm.expect(jsonData.address.fullName.firstName).to.eql(pm.environment.get(\"FIRSTNAME\"));",
+									"    pm.expect(jsonData.address.fullName.lastName).to.eql(pm.environment.get(\"LASTNAME\"));",
+									"    pm.expect(jsonData.address.company).to.eql(pm.environment.get(\"COMPANY\"));",
+									"    pm.expect(jsonData.address.addressLine1).to.eql('' + pm.environment.get(\"ADDRESSLINE1\"));",
+									"    pm.expect(jsonData.address.addressLine2).to.eql('' + pm.environment.get(\"ADDRESSLINE2\"));",
+									"    pm.expect(jsonData.address.zipCode).to.eql('' + pm.environment.get(\"ZIPCODE\"));",
+									"    pm.expect(jsonData.address.country).to.eql(pm.environment.get(\"COUNTRY\"));",
+									"    pm.expect(jsonData.address.subdivision).to.eql(pm.environment.get(\"SUBDIVISION\"));",
+									"    pm.expect(jsonData.address.city).to.eql(pm.environment.get(\"CITY\"));",
+									"    pm.expect(jsonData.address.phoneNumber).to.eql('' + pm.environment.get(\"PHONENUMBER\"));",
+									"});",
+									"",
+									"// Test JSON",
+									"pm.test(\"response should be okay to process\", function () {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"// Test Type of ",
+									"pm.test(\"Response body should be in the correct format\", function() {",
+									"    let jsonResponse = pm.response.json();",
+									"    pm.expect(jsonResponse.address).to.be.a('object');",
+									"    pm.expect(jsonResponse.address.id).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.fullName).to.be.a('object');",
+									"    pm.expect(jsonResponse.address.fullName.firstName).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.fullName.lastName).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.country).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.subdivision).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.city).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.zipCode).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.phoneNumber).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.company).to.be.a('string');",
+									"    pm.expect(jsonResponse.address.addressLine1).to.be.a('string');",
+									"    pm.expect(jsonResponse.isDefaultAddress).to.be.a('boolean');",
+									"});",
+									"",
+									"// Test Header",
+									"pm.test(\"Response Header is present and correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");",
+									"});",
+									"",
+									"// Check Cookie Response",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Mrp1k_VPWIJn4zez74a-qS0kOftZUjf6m_4qiruuqeU.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIxLTEwLTE1VDA2OjMzOjAzLjUzMFoiLCJ1aWQiOiJhY2M4ZmM5ZS05MTBiLTRhMGQtOGEzZS00M2I5MDUyNDE3YTkiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6ImFkZmQ4OWNhLTRlNjgtNDdjNi1hNzkwLWM5NDBkNmU5M2M5NyIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMS0xMC0xNVQxMDozMzowMy41MzBaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"switch (responseCode.code) {",
+									"    case 200:",
+									"        tests[\"200 ok. The request has succeeded\"] = true;",
+									"        break;",
+									"    case 404:",
+									"        tests[\"404 Not found\"] = false;",
+									"        break;",
+									"    case 400:",
+									"        tests[\"400 Bad Request\"] = false;",
+									"        break;",
+									"    case 401:",
+									"        tests[\"401 BUnauthorized\"] = false;",
+									"        break;",
+									"    case 500:",
+									"        tests[\"500 Internal Server Error\"] = false;",
+									"        break;",
+									"    case 503:",
+									"        tests[\"503 Server unavailable\"] = false;",
+									"        break;",
+									"    case 502:",
+									"        tests[\"502 bad gateway\"] = false;",
+									"        break;",
+									"    case 599:",
+									"        tests[\"599 Network connect timeout error\"] = false;",
+									"        break;",
+									"    case 408:",
+									"        tests[\"408 Request is timeout\"] = false;",
+									"        break;",
+									"    default:",
+									"        tests[\"Sorry, we are out of\" + responseCode.code] = false;",
+									"}",
+									"",
+									"// Response Time",
+									"pm.test(\"Response time is less than 1000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+									"});",
+									"",
+									"// Response Size ",
+									"pm.test(\"Response Size is less than 1000 B\", function () {",
+									"    pm.expect(pm.response.responseSize).to.be.below(1000);",
+									"});",
+									"",
+									"// Test Header",
+									"pm.test(\"Response Header is present and correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");",
+									"});",
+									"",
+									"// Test JSON",
+									"pm.test(\"Order has been deleted, OK\", function () {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.an('object');",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"    pm.response.to.have.jsonBody({});",
+									"});",
+									"",
+									"// Check Cookie Response",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Mrp1k_VPWIJn4zez74a-qS0kOftZUjf6m_4qiruuqeU.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIxLTEwLTE1VDA2OjMzOjAzLjUzMFoiLCJ1aWQiOiJhY2M4ZmM5ZS05MTBiLTRhMGQtOGEzZS00M2I5MDUyNDE3YTkiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6ImFkZmQ4OWNhLTRlNjgtNDdjNi1hNzkwLWM5NDBkNmU5M2M5NyIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMS0xMC0xNVQxMDozMzowMy41MzBaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ"
+							}
+						],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE address 2nd time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(responseCode.code === 200) {",
+									"    tests[\"Backend is available, response code is 200\"] = false;",
+									"} else if (responseCode.code === 401) {",
+									"    tests[\"Not authorised, Check access token or Log in\"] = true;",
+									"} else if (responseCode.code === 403) {",
+									"    tests[\"Forbiden\"] = true;",
+									"} else if (responseCode.code === 404) {",
+									"    tests[\"Not Found. Check if you made correct request\"] = true;",
+									"} else if (responseCode.code === 422) {",
+									"    tests[\"The instance is not valid\"] = true;",
+									"} else if (responseCode.code === 400) {",
+									"    tests[\"Bad Request\"] = true;",
+									"} else {",
+									"    tests[\"Something went wrong. Check response body\"] = true;",
+									"}",
+									"",
+									"// Test Time ",
+									"tests[\"Response Time Acceptable\"] = responseTime < 500;",
+									"",
+									"// TEst Size ",
+									"pm.test(\"Response Size is less than 2KB\", function () {",
+									"    pm.expect(pm.response.responseSize).to.be.below(2048);",
+									"});",
+									"",
+									"// Check Status ",
+									"pm.test(\"Status code is 400, as expected\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// Check Time ",
+									"pm.test(\"Response time is less than 1000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+									"});",
+									"",
+									"// Check Size",
+									"pm.test(\"Response Size is less than 1000B\", function () {",
+									"    pm.expect(pm.response.responseSize).to.be.below(1000);",
+									"});",
+									"",
+									"// Check Header",
+									"pm.test(\"Header is correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\",\"application/json;charset=utf-8\");",
+									"    pm.response.to.have.header(\"Content-Length\",\"191\");",
+									"    pm.response.to.have.header(\"Connection\",\"keep-alive\");",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");",
+									"});",
+									"",
+									"// Check if Address can be delete 2nd time",
+									"pm.test(\"Address can't be deleted, nonexist. As expected.\", function () {",
+									"    pm.response.to.be.error;",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.be.an('object');",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"// Test body: message and ID is present and correct",
+									"pm.test(\"Message is include previously deleted ID\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"message\", (pm.environment.get(\"ID\")));",
+									"});",
+									"",
+									"//  Test body is correct",
+									"pm.test(\"Message details ID is correct\", function () {",
+									"    const jsonData = pm.response.json(); ",
+									"    pm.expect(jsonData.details.cant_find).to.eql(\"address_id: \" + pm.environment.get(\"ID\"));",
+									"});",
+									"",
+									"// Test Header",
+									"pm.test(\"Response Header is present and correct\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");",
+									"});",
+									"",
+									"// Check Cookie Response",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;",
+									"});",
+									"",
+									"// Test type of ",
+									"pm.test(\"Response body should be okay in the correct format\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");",
+									"    pm.expect(jsonData.details).to.be.a(\"Object\");",
+									"    pm.expect(jsonData.details.cant_find).to.be.a(\"string\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Mrp1k_VPWIJn4zez74a-qS0kOftZUjf6m_4qiruuqeU.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIxLTEwLTE1VDA2OjMzOjAzLjUzMFoiLCJ1aWQiOiJhY2M4ZmM5ZS05MTBiLTRhMGQtOGEzZS00M2I5MDUyNDE3YTkiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6ImFkZmQ4OWNhLTRlNjgtNDdjNi1hNzkwLWM5NDBkNmU5M2M5NyIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMS0xMC0xNVQxMDozMzowMy41MzBaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ"
+							}
+						],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get specific deleted Address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(responseCode.code === 200) {\r",
+									"    tests[\"Backend is available, response code is 200\"] = false;\r",
+									"}   else if (responseCode.code === 401) {\r",
+									"    tests[\"Not authorised, Check access token or Log in\"] = false;\r",
+									"}   else if (responseCode.code === 403) {\r",
+									"    tests[\"Forbiden\"] = false;\r",
+									"}   else if (responseCode.code === 404) {\r",
+									"    tests[\"Not Found. Check if you made correct request\"] = false;\r",
+									"}   else if (responseCode.code === 422) {\r",
+									"    tests[\"The instance is not valid\"] = false;\r",
+									"}   else if (responseCode.code === 400) {\r",
+									"    tests[\"Bad Requset\"] = true; \r",
+									"}   else {\r",
+									"    tests[\"Something won't wrong. Check response body\"] = false;\r",
+									"}\r",
+									"\r",
+									"// Check Time \r",
+									"pm.test(\"Response time is less than 1000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"// Check Size\r",
+									"pm.test(\"Response Size is less than 1000B\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"// Test Body: include ID\r",
+									"pm.test(\"ID is in response\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test Body: comapir address and ID \r",
+									"pm.test(\"Details is correct\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.details.cant_find).to.eql('address_id: ' + pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test JSON\r",
+									"pm.test(\"Response should be okay to porcess\", function () {\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"//  Test type of \r",
+									"pm.test(\"Response body should be okay in the correct format\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.details).to.be.a(\"Object\");\r",
+									"    pm.expect(jsonData.details.cant_find).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Response Header is present and correct\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Deleted Address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(responseCode.code === 200) {\r",
+									"    tests[\"Backend is available, response code is 200\"] = false;\r",
+									"}   else if (responseCode.code === 401) {\r",
+									"    tests[\"Not authorised, Check access token or Log in\"] = false;\r",
+									"}   else if (responseCode.code === 403) {\r",
+									"    tests[\"Forbiden\"] = false;\r",
+									"}   else if (responseCode.code === 404) {\r",
+									"    tests[\"Not Found. Check if you made correct request\"] = false;\r",
+									"}   else if (responseCode.code === 422) {\r",
+									"    tests[\"The instance is not valid\"] = false;\r",
+									"}   else if (responseCode.code === 400) {\r",
+									"    tests[\"Bad Requset\"] = true; \r",
+									"}   else {\r",
+									"    tests[\"Something won't wrong. Check response body\"] = false;\r",
+									"}\r",
+									"\r",
+									"// Test Time \r",
+									"tests[\"Response Time Acceptable\"] = responseTime < 500;\r",
+									"\r",
+									"// TEst Size \r",
+									"pm.test(\"Response Size is less than 2KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(2048);\r",
+									"});\r",
+									"\r",
+									"//  Test ID include \r",
+									"pm.test(\"ID is in response\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test compair Address - ID \r",
+									"pm.test(\"Details is correct\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.details.cant_find).to.eql('address_id: ' + pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test Header\r",
+									"pm.test(\"Response should be okay to porcess\", function () {\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// Test Type of \r",
+									"pm.test(\"Response body should be okay in the correct format\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.details).to.be.a(\"Object\");\r",
+									"    pm.expect(jsonData.details.cant_find).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Test Header\r",
+									"pm.test(\"Response Header is present and correct\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{ID}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/default",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								"default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Deleted Address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(responseCode.code === 200) {\r",
+									"    tests[\"Backend is available, response code is 200\"] = false;\r",
+									"}   else if (responseCode.code === 401) {\r",
+									"    tests[\"Not authorised, Check access token or Log in\"] = false;\r",
+									"}   else if (responseCode.code === 403) {\r",
+									"    tests[\"Forbiden\"] = false;\r",
+									"}   else if (responseCode.code === 404) {\r",
+									"    tests[\"Not Found. Check if you made correct request\"] = false;\r",
+									"}   else if (responseCode.code === 422) {\r",
+									"    tests[\"The instance is not valid\"] = false;\r",
+									"}   else if (responseCode.code === 400) {\r",
+									"    tests[\"Bad Requset\"] = true; \r",
+									"}   else {\r",
+									"    tests[\"Something won't wrong. Check response body\"] = false;\r",
+									"}\r",
+									"\r",
+									"// Test Time \r",
+									"tests[\"Response Time Acceptable\"] = responseTime < 500;\r",
+									"\r",
+									"// TEst Size \r",
+									"pm.test(\"Response Size is less than 2KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(2048);\r",
+									"});\r",
+									"\r",
+									"//  Test ID include \r",
+									"pm.test(\"ID is in response\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test compair Address - ID \r",
+									"pm.test(\"Details is correct\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.details.cant_find).to.eql('address_id: ' + pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test Header\r",
+									"pm.test(\"Response should be okay to porcess\", function () {\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// Test Type of \r",
+									"pm.test(\"Response body should be okay in the correct format\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.details).to.be.a(\"Object\");\r",
+									"    pm.expect(jsonData.details.cant_find).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Test Header\r",
+									"pm.test(\"Response Header is present and correct\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/{{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								"{{ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Negative",
+			"item": [
+				{
+					"name": "Create New Address with invalid \"First Name\", value -1111",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" pm.environment.clear();\r",
+									"\r",
+									"// pm.environment.unset(\"ID\");\r",
+									"// pm.environment.unset(\"company\");\r",
+									"// pm.environment.unset(\"zipCode\");\r",
+									"// pm.environment.unset(\"addressLine1\");\r",
+									"// pm.environment.unset(\"addressLine2\");\r",
+									"// pm.environment.unset(\"firstName\");\r",
+									"// pm.environment.unset(\"lastName\");\r",
+									"// pm.environment.unset(\"city\");\r",
+									"// pm.environment.unset(\"country\");\r",
+									"// pm.environment.unset(\"phoneNumber\");\r",
+									"// pm.environment.unset(\"subdivision\");\r",
+									"\r",
+									"//returns a random integer from 10000 to 90000 with 5 digits \r",
+									"pm.environment.set(\"ZIPCODE\", Math.floor(Math.random()*90000) + 10000);\r",
+									"\r",
+									"//returns a random integer from 100 to 900 with 3 digits\r",
+									"pm.environment.set(\"ADDRESSLINE2\", Math.floor(Math.random()*900) + 100);\r",
+									"\r",
+									"const stateAbbreviations = [\r",
+									" 'AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FM','FL','GA',\r",
+									" 'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MH','MD','MA',\r",
+									" 'MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',\r",
+									" 'MP','OH','OK','OR','PW','PA','PR','RI','SC','SD','TN','TX','UT',\r",
+									" 'VT','VI','VA','WA','WV','WI','WY'\r",
+									"];\r",
+									"const randomState = stateAbbreviations[Math.floor(Math.random() * stateAbbreviations.length)];\r",
+									"pm.environment.set(\"SUBDIVISION\", randomState);\r",
+									"\r",
+									"// Using Faker lib https://learning.postman.com/docs/writing-scripts/script-references/variables-list/\r",
+									"// let fName = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+									"// pm.environment.set(\"FIRSTNAME\", fName);\r",
+									"\r",
+									"let lName = pm.variables.replaceIn('{{$randomLastName}}')\r",
+									"pm.environment.set(\"LASTNAME\", lName);\r",
+									"\r",
+									"let co = pm.variables.replaceIn('{{$randomCompanyName}}')\r",
+									"pm.environment.set(\"COMPANY\", co);\r",
+									"\r",
+									"let addrLn1 = pm.variables.replaceIn('{{$randomStreetAddress}}')\r",
+									"pm.environment.set(\"ADDRESSLINE1\", addrLn1);\r",
+									"\r",
+									"let cty = pm.variables.replaceIn('{{$randomCity}}')\r",
+									"pm.environment.set(\"CITY\", cty);\r",
+									"\r",
+									"let cntry = pm.variables.replaceIn('{{$randomCountry}}')\r",
+									"pm.environment.set(\"COUNTRY\", cntry);\r",
+									"\r",
+									"let phoneNum = pm.variables.replaceIn('{{$randomPhoneNumber}}')\r",
+									"pm.environment.set(\"PHONENUMBER\", phoneNum);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// set id for ENV\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"ID\", jsonData.id);\r",
+									"\r",
+									"// Equal compair ID \r",
+									"pm.test(\"ID is correct\", function () {\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"missing_required_field\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"fullName\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"field\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"missing_required_field, details: {\\\"field\\\":\\\"fullName\\\"}\");\r",
+									"    pm.expect(jsonData.details.field).to.eql(\"fullName\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body keys are ok\", function () {\r",
+									"pm.expect(pm.response.text()).not.to.include(\"id\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": {\r\n        \"fullName\": {\r\n            \"firstName\": \"-1111\",\r\n            \"lastName\": \"{{LASTNAME}}\"\r\n        },\r\n        \"company\": \"{{COMPANY}}\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"{{ADDRESSLINE1}}\",\r\n        \"addressLine2\": \"{{ADDRESSLINE2}}\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"{{CITY}}\",\r\n        \"country\": \"{{COUNTRY}}\",\r\n        \"subdivision\": \"{{SUBDIVISION}}\",\r\n        \"zipCode\": \"{{ZIPCODE}}\",\r\n        \"phoneNumber\": \"{{PHONENUMBER}}\"\r\n    },\r\n    \"setAsDefault\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Created Address with invalid \"First Name\" , value -1111",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402, 500]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"expected_guid\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"not_guid\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"expected_guid, details: {\\\"not_guid\\\":\\\"null\\\"}\");\r",
+									"    pm.expect(jsonData.details.not_guid).to.eql(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Created Address with invalid \"FIrst Name\",  value -1111",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402, 500]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"expected_guid\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"not_guid\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"expected_guid, details: {\\\"not_guid\\\":\\\"null\\\"}\");\r",
+									"    pm.expect(jsonData.details.not_guid).to.eql(\"null\");\r",
+									"});\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Address with invalid \"Last Name\"  value 9999",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" pm.environment.clear();\r",
+									"\r",
+									"// pm.environment.unset(\"ID\");\r",
+									"// pm.environment.unset(\"company\");\r",
+									"// pm.environment.unset(\"zipCode\");\r",
+									"// pm.environment.unset(\"addressLine1\");\r",
+									"// pm.environment.unset(\"addressLine2\");\r",
+									"// pm.environment.unset(\"firstName\");\r",
+									"// pm.environment.unset(\"lastName\");\r",
+									"// pm.environment.unset(\"city\");\r",
+									"// pm.environment.unset(\"country\");\r",
+									"// pm.environment.unset(\"phoneNumber\");\r",
+									"// pm.environment.unset(\"subdivision\");\r",
+									"\r",
+									"//returns a random integer from 10000 to 90000 with 5 digits \r",
+									"pm.environment.set(\"ZIPCODE\", Math.floor(Math.random()*90000) + 10000);\r",
+									"\r",
+									"//returns a random integer from 100 to 900 with 3 digits\r",
+									"pm.environment.set(\"ADDRESSLINE2\", Math.floor(Math.random()*900) + 100);\r",
+									"\r",
+									"const stateAbbreviations = [\r",
+									" 'AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FM','FL','GA',\r",
+									" 'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MH','MD','MA',\r",
+									" 'MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',\r",
+									" 'MP','OH','OK','OR','PW','PA','PR','RI','SC','SD','TN','TX','UT',\r",
+									" 'VT','VI','VA','WA','WV','WI','WY'\r",
+									"];\r",
+									"const randomState = stateAbbreviations[Math.floor(Math.random() * stateAbbreviations.length)];\r",
+									"pm.environment.set(\"SUBDIVISION\", randomState);\r",
+									"\r",
+									"// Using Faker lib https://learning.postman.com/docs/writing-scripts/script-references/variables-list/\r",
+									"let fName = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+									"pm.environment.set(\"FIRSTNAME\", fName);\r",
+									"\r",
+									"// let lName = pm.variables.replaceIn('{{$randomLastName}}')\r",
+									"// pm.environment.set(\"LASTNAME\", lName);\r",
+									"\r",
+									"let co = pm.variables.replaceIn('{{$randomCompanyName}}')\r",
+									"pm.environment.set(\"COMPANY\", co);\r",
+									"\r",
+									"let addrLn1 = pm.variables.replaceIn('{{$randomStreetAddress}}')\r",
+									"pm.environment.set(\"ADDRESSLINE1\", addrLn1);\r",
+									"\r",
+									"let cty = pm.variables.replaceIn('{{$randomCity}}')\r",
+									"pm.environment.set(\"CITY\", cty);\r",
+									"\r",
+									"let cntry = pm.variables.replaceIn('{{$randomCountry}}')\r",
+									"pm.environment.set(\"COUNTRY\", cntry);\r",
+									"\r",
+									"let phoneNum = pm.variables.replaceIn('{{$randomPhoneNumber}}')\r",
+									"pm.environment.set(\"PHONENUMBER\", phoneNum);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// set id for ENV\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"ID\", jsonData.id);\r",
+									"\r",
+									"// Equal compair ID \r",
+									"pm.test(\"ID is correct\", function () {\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"missing_required_field\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"fullName\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"field\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"missing_required_field, details: {\\\"field\\\":\\\"fullName\\\"}\");\r",
+									"    pm.expect(jsonData.details.field).to.eql(\"fullName\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body keys are ok\", function () {\r",
+									"pm.expect(pm.response.text()).not.to.include(\"id\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": {\r\n        \"fullName\": {\r\n            \"firstName\": \"{{FIRSTNAME}}\",\r\n            \"lastName\": \"9999\"\r\n        },\r\n        \"company\": \"{{COMPANY}}\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"{{ADDRESSLINE1}}\",\r\n        \"addressLine2\": \"{{ADDRESSLINE2}}\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"{{CITY}}\",\r\n        \"country\": \"{{COUNTRY}}\",\r\n        \"subdivision\": \"{{SUBDIVISION}}\",\r\n        \"zipCode\": \"{{ZIPCODE}}\",\r\n        \"phoneNumber\": \"{{PHONENUMBER}}\"\r\n    },\r\n    \"setAsDefault\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Created Address with invalid \"Last Name\"  value 9999",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402, 500]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"expected_guid\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"not_guid\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"expected_guid, details: {\\\"not_guid\\\":\\\"null\\\"}\");\r",
+									"    pm.expect(jsonData.details.not_guid).to.eql(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Created Address with invalid \"Last Name\" with value 9999",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402, 500]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"expected_guid\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"not_guid\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"expected_guid, details: {\\\"not_guid\\\":\\\"null\\\"}\");\r",
+									"    pm.expect(jsonData.details.not_guid).to.eql(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Address with invalid \"CITY\" value used as \"Equivalence Partitioning\"",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" pm.environment.clear();\r",
+									"\r",
+									"// pm.environment.unset(\"ID\");\r",
+									"// pm.environment.unset(\"company\");\r",
+									"// pm.environment.unset(\"zipCode\");\r",
+									"// pm.environment.unset(\"addressLine1\");\r",
+									"// pm.environment.unset(\"addressLine2\");\r",
+									"// pm.environment.unset(\"firstName\");\r",
+									"// pm.environment.unset(\"lastName\");\r",
+									"// pm.environment.unset(\"city\");\r",
+									"// pm.environment.unset(\"country\");\r",
+									"// pm.environment.unset(\"phoneNumber\");\r",
+									"// pm.environment.unset(\"subdivision\");\r",
+									"\r",
+									"//returns a random integer from 10000 to 90000 with 5 digits \r",
+									"pm.environment.set(\"ZIPCODE\", Math.floor(Math.random()*90000) + 10000);\r",
+									"\r",
+									"//returns a random integer from 100 to 900 with 3 digits\r",
+									"pm.environment.set(\"ADDRESSLINE2\", Math.floor(Math.random()*900) + 100);\r",
+									"\r",
+									"const stateAbbreviations = [\r",
+									" 'AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FM','FL','GA',\r",
+									" 'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MH','MD','MA',\r",
+									" 'MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',\r",
+									" 'MP','OH','OK','OR','PW','PA','PR','RI','SC','SD','TN','TX','UT',\r",
+									" 'VT','VI','VA','WA','WV','WI','WY'\r",
+									"];\r",
+									"const randomState = stateAbbreviations[Math.floor(Math.random() * stateAbbreviations.length)];\r",
+									"pm.environment.set(\"SUBDIVISION\", randomState);\r",
+									"\r",
+									"// Using Faker lib https://learning.postman.com/docs/writing-scripts/script-references/variables-list/\r",
+									"let fName = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+									"pm.environment.set(\"FIRSTNAME\", fName);\r",
+									"\r",
+									"let lName = pm.variables.replaceIn('{{$randomLastName}}')\r",
+									"pm.environment.set(\"LASTNAME\", lName);\r",
+									"\r",
+									"let co = pm.variables.replaceIn('{{$randomCompanyName}}')\r",
+									"pm.environment.set(\"COMPANY\", co);\r",
+									"\r",
+									"let addrLn1 = pm.variables.replaceIn('{{$randomStreetAddress}}')\r",
+									"pm.environment.set(\"ADDRESSLINE1\", addrLn1);\r",
+									"\r",
+									"// let cty = pm.variables.replaceIn('{{$randomCity}}')\r",
+									"// pm.environment.set(\"CITY\", cty);\r",
+									"\r",
+									"let cntry = pm.variables.replaceIn('{{$randomCountry}}')\r",
+									"pm.environment.set(\"COUNTRY\", cntry);\r",
+									"\r",
+									"let phoneNum = pm.variables.replaceIn('{{$randomPhoneNumber}}')\r",
+									"pm.environment.set(\"PHONENUMBER\", phoneNum);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// set id for ENV\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"ID\", jsonData.id);\r",
+									"\r",
+									"// Equal compair ID \r",
+									"pm.test(\"ID is correct\", function () {\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"missing_required_field\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"fullName\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"field\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"missing_required_field, details: {\\\"field\\\":\\\"fullName\\\"}\");\r",
+									"    pm.expect(jsonData.details.field).to.eql(\"fullName\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body keys are ok\", function () {\r",
+									"pm.expect(pm.response.text()).not.to.include(\"id\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": {\r\n        \"fullName\": {\r\n            \"firstName\": \"{{FIRSTNAME}}\",\r\n            \"lastName\": \"{{LASTNAME}}\"\r\n        },\r\n        \"company\": \"{{COMPANY}}\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"{{ADDRESSLINE1}}\",\r\n        \"addressLine2\": \"{{ADDRESSLINE2}}\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"@A#_-.!\",\r\n        \"country\": \"{{COUNTRY}}\",\r\n        \"subdivision\": \"{{SUBDIVISION}}\",\r\n        \"zipCode\": \"{{ZIPCODE}}\",\r\n        \"phoneNumber\": \"{{PHONENUMBER}}\"\r\n    },\r\n    \"setAsDefault\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Created Address with invalid \"CITY\" value used as \"Equivalence Partitioning\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402, 500]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"expected_guid\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"not_guid\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"expected_guid, details: {\\\"not_guid\\\":\\\"null\\\"}\");\r",
+									"    pm.expect(jsonData.details.not_guid).to.eql(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Created Address with invalid \"CITY\" value used as \"Equivalence Partitioning\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402, 500]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"expected_guid\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"not_guid\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"expected_guid, details: {\\\"not_guid\\\":\\\"null\\\"}\");\r",
+									"    pm.expect(jsonData.details.not_guid).to.eql(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Address with invalid \"PhoneNumber\"  value used as  1 integer  \"Boundary Testing\"",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" pm.environment.clear();\r",
+									"\r",
+									"// pm.environment.unset(\"ID\");\r",
+									"// pm.environment.unset(\"company\");\r",
+									"// pm.environment.unset(\"zipCode\");\r",
+									"// pm.environment.unset(\"addressLine1\");\r",
+									"// pm.environment.unset(\"addressLine2\");\r",
+									"// pm.environment.unset(\"firstName\");\r",
+									"// pm.environment.unset(\"lastName\");\r",
+									"// pm.environment.unset(\"city\");\r",
+									"// pm.environment.unset(\"country\");\r",
+									"// pm.environment.unset(\"phoneNumber\");\r",
+									"// pm.environment.unset(\"subdivision\");\r",
+									"\r",
+									"//returns a random integer from 10000 to 90000 with 5 digits \r",
+									"pm.environment.set(\"ZIPCODE\", Math.floor(Math.random()*90000) + 10000);\r",
+									"\r",
+									"//returns a random integer from 100 to 900 with 3 digits\r",
+									"pm.environment.set(\"ADDRESSLINE2\", Math.floor(Math.random()*900) + 100);\r",
+									"\r",
+									"const stateAbbreviations = [\r",
+									" 'AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FM','FL','GA',\r",
+									" 'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MH','MD','MA',\r",
+									" 'MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',\r",
+									" 'MP','OH','OK','OR','PW','PA','PR','RI','SC','SD','TN','TX','UT',\r",
+									" 'VT','VI','VA','WA','WV','WI','WY'\r",
+									"];\r",
+									"const randomState = stateAbbreviations[Math.floor(Math.random() * stateAbbreviations.length)];\r",
+									"pm.environment.set(\"SUBDIVISION\", randomState);\r",
+									"\r",
+									"// Using Faker lib https://learning.postman.com/docs/writing-scripts/script-references/variables-list/\r",
+									"let fName = pm.variables.replaceIn('{{$randomFirstName}}')\r",
+									"pm.environment.set(\"FIRSTNAME\", fName);\r",
+									"\r",
+									"let lName = pm.variables.replaceIn('{{$randomLastName}}')\r",
+									"pm.environment.set(\"LASTNAME\", lName);\r",
+									"\r",
+									"let co = pm.variables.replaceIn('{{$randomCompanyName}}')\r",
+									"pm.environment.set(\"COMPANY\", co);\r",
+									"\r",
+									"let addrLn1 = pm.variables.replaceIn('{{$randomStreetAddress}}')\r",
+									"pm.environment.set(\"ADDRESSLINE1\", addrLn1);\r",
+									"\r",
+									"let cty = pm.variables.replaceIn('{{$randomCity}}')\r",
+									"pm.environment.set(\"CITY\", cty);\r",
+									"\r",
+									"let cntry = pm.variables.replaceIn('{{$randomCountry}}')\r",
+									"pm.environment.set(\"COUNTRY\", cntry);\r",
+									"\r",
+									"// let phoneNum = pm.variables.replaceIn('{{$randomPhoneNumber}}')\r",
+									"// pm.environment.set(\"PHONENUMBER\", phoneNum);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// set id for ENV\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"ID\", jsonData.id);\r",
+									"\r",
+									"// Equal compair ID \r",
+									"pm.test(\"ID is correct\", function () {\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"ID\"));\r",
+									"});\r",
+									"\r",
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"missing_required_field\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"fullName\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"field\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"missing_required_field, details: {\\\"field\\\":\\\"fullName\\\"}\");\r",
+									"    pm.expect(jsonData.details.field).to.eql(\"fullName\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body keys are ok\", function () {\r",
+									"pm.expect(pm.response.text()).not.to.include(\"id\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"address\": {\r\n        \"fullName\": {\r\n            \"firstName\": \"-1111\",\r\n            \"lastName\": \"{{LASTNAME}}\"\r\n        },\r\n        \"company\": \"{{COMPANY}}\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"{{ADDRESSLINE1}}\",\r\n        \"addressLine2\": \"{{ADDRESSLINE2}}\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"{{CITY}}\",\r\n        \"country\": \"{{COUNTRY}}\",\r\n        \"subdivision\": \"{{SUBDIVISION}}\",\r\n        \"zipCode\": \"{{ZIPCODE}}\",\r\n        \"phoneNumber\": \"1\"\r\n    },\r\n    \"setAsDefault\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Created Address with invalid \"PhoneNumber\"  value used as  1 integer  \"Boundary Testing\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402, 500]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"expected_guid\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"not_guid\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"expected_guid, details: {\\\"not_guid\\\":\\\"null\\\"}\");\r",
+									"    pm.expect(jsonData.details.not_guid).to.eql(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Created Address with invalid \"PhoneNumber\"  value used as  1 integer  \"Boundary Testing\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for code: Code shouldn't be 200 ! \r",
+									"pm.test(\"Status code is NOT 200\", function () {\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test Reposnse code should be 400, 402 etc\r",
+									"pm.test(\"Correct response code\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 402, 500]);\r",
+									"});\r",
+									"\r",
+									"// Test Time \r",
+									"pm.test(\"Response Time is less than 0.5s\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test Size\r",
+									"pm.test(\"Response Size is less than 1KB\", function () {\r",
+									"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+									"});\r",
+									"\r",
+									"// Test Header \r",
+									"pm.test(\"Header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+									"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+									"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+									"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+									"});\r",
+									"\r",
+									"// Test Value\r",
+									"pm.test(\"Body contains correct Values\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"expected_guid\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test Body has correct KEYS\r",
+									"pm.test(\"Body contains KEYS\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"details\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"not_guid\");\r",
+									"});\r",
+									"\r",
+									"// Test compair KEY/Value\r",
+									"pm.test(\"Response Body KEY/VALUE is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"expected_guid, details: {\\\"not_guid\\\":\\\"null\\\"}\");\r",
+									"    pm.expect(jsonData.details.not_guid).to.eql(\"null\");\r",
+									"});\r",
+									"\r",
+									"// Test JSON response\r",
+									"pm.test(\"Response json has to be OK\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"    pm.response.to.be.error;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.response.to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Check Cookie Response\r",
+									"pm.test(\"Cookie XSRF-TOKEN is present\", () => {\r",
+									"  pm.expect(pm.cookies.has('XSRF-TOKEN')).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/?id={{ID}}",
+							"protocol": "https",
+							"host": [
+								"addresses",
+								"wixapps",
+								"net"
+							],
+							"path": [
+								"_api",
+								"addresses-web",
+								"v1",
+								"addresses",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "7gz063wbVN9ghp0_VrDi56u-i2W7GKdoY5RydqX6nI4.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA5LTMwVDA1OjUwOjA5LjcwN1oiLCJ1aWQiOiI0NjQ2MjJlMi0zOWQ5LTQ4NTctOTA5Zi0wNzNlMDYzODU1ZDkiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6ImQ3YTAwNTljLTFhODUtNDFkMS05ZDVhLTRlZmY5MTA2NjAzZSIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wOS0zMFQwOTo1MDowOS43MDdaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
