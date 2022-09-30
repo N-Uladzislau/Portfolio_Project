@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preload" href="https://static.snyk.io/prod/static-assets/style/build/fonts/roboto-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://static.snyk.io/prod/static-assets/style/build/fonts/roboto-medium.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://static.snyk.io/prod/static-assets/style/build/fonts/roboto-bold.woff2" as="font" type="font/woff2" crossorigin>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language" content="en-us">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Analysis for: | Snyk</title>
+    
+    <meta data-snyk-vue="pageDesc" name="description" content="Snyk helps you use open source and stay secure. Continuously find and fix vulnerabilities in dependencies pulled from npm, Maven, RubyGems, PyPI and more.">
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/snyk/image/upload/v1468845142/favicon/favicon.png" sizes="194x194">
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/snyk/image/upload/v1468845142/favicon/android-chrome.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/snyk/image/upload/v1468845142/favicon/apple-touch-icon.png" sizes="180x180">
+    <link rel="shortcut icon" href="https://res.cloudinary.com/snyk/image/upload/v1468845142/favicon/favicon.ico">
+    <link rel="mask-icon" href="https://res.cloudinary.com/snyk/image/upload/v1468845142/favicon/safari-pinned-tab.svg">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="https://res.cloudinary.com/snyk/image/upload/v1468845142/favicon/mstile.png">
+    <meta name="theme-color" content="hsl(259, 69%, 37%)">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" property="og:image" content="https://res.cloudinary.com/snyk/image/upload/v1468845142/logo/snyk-avatar.png">
+    <meta property="og:image:secure_url" content="https://res.cloudinary.com/snyk/image/upload/v1468845142/logo/snyk-avatar.png">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="600">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Snyk">
+    <meta name="twitter:site" content="@snyksec">
+    <meta data-snyk-vue="pageTitle" name="twitter:title" property="og:title" content="Snyk - Security Analysis for:">
+    <meta data-snyk-vue="pageDesc" name="twitter:description" property="og:description" content="Snyk helps you use open source and stay secure. Continuously find and fix vulnerabilities in dependencies pulled from npm, Maven, RubyGems, PyPI and more.">
+    <link rel="stylesheet" href="https://static.snyk.io/prod/static-assets/style/build/styles/app.min.b0d40fa1d9896817fdde1ec546e052a9.md5.css">
+      <link rel="stylesheet" href="https://static.snyk.io/prod/static-assets/js/build/frontend/frontend.975f02784b4a9eed5ed831fd384159d9.md5.css">
+
+
+    <script nonce="ydPEacKXa9Ks+hKVIQqe0g==" type="text/javascript">
+        window.$embedded = JSON.parse(decodeURIComponent("%7B%22registration%22%3A%7B%7D%2C%22login%22%3A%7B%7D%2C%22showUpgradeButton%22%3Atrue%2C%22showBillingSettings%22%3Atrue%2C%22showPlans%22%3Atrue%2C%22headway%22%3A%7B%22enabled%22%3Afalse%7D%2C%22amplitudeExperiment%22%3A%7B%22apiKey%22%3A%22client-dDZRp3z3XKqwf8vidrdODEdkPJ55xQCi%22%7D%2C%22loginOptionsVisibility%22%3A%7B%22showAuth0GithubLogin%22%3Atrue%2C%22showAuth0BitbucketLogin%22%3Atrue%2C%22showAuth0GoogleLogin%22%3Atrue%2C%22showDockerLogin%22%3Atrue%2C%22showActiveDirectoryLogin%22%3Afalse%2C%22showSamlLogin%22%3Afalse%2C%22showGithubLogin%22%3Afalse%2C%22showSSOLogin%22%3Atrue%2C%22showAuth0WaadLogin%22%3Atrue%2C%22showSSOLink%22%3Atrue%7D%2C%22analyticsSecret%22%3A%22rrZlYpGGcdrLvloIXwGTqX8ZAQNsB9A0%22%2C%22debugAnalytics%22%3Afalse%2C%22hideChrome%22%3Afalse%2C%22routerBase%22%3Anull%7D"));
+    </script>
+    <script nonce="ydPEacKXa9Ks+hKVIQqe0g==" text="text/javascript">
+      window.intercomSettings = {
+        hide_default_launcher: false || window.$embedded.hideChrome
+      }
+    </script>
+    <script data-snyk-segment-snippet="true" nonce="ydPEacKXa9Ks+hKVIQqe0g==">
+      if(window === window.parent){
+!function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;
+  t.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+key+"/analytics.min.js";
+  t.nonce="ydPEacKXa9Ks+hKVIQqe0g==";
+  var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.13.1";
+  analytics.load("IuYuomiu7E3rWexqWAsaXnJzjBlNxWxQ");
+  analytics.page("test");
+}}();}
+    </script>
+    <script nonce="ydPEacKXa9Ks+hKVIQqe0g==">
+      // SpeedCurve initialization code, taken from their snippet
+      window.LUX = (function(){var a=("undefined"!==typeof(LUX)&&"undefined"!==typeof(LUX.gaMarks)?LUX.gaMarks:[]);var d=("undefined"!==typeof(LUX)&&"undefined"!==typeof(LUX.gaMeasures)?LUX.gaMeasures:[]);var j="LUX_start";var k=window.performance;var l=("undefined"!==typeof(LUX)&&LUX.ns?LUX.ns:(Date.now?Date.now():+(new Date())));if(k&&k.timing&&k.timing.navigationStart){l=k.timing.navigationStart}function f(){if(k&&k.now){return k.now()}var o=Date.now?Date.now():+(new Date());return o-l}function b(n){if(k){if(k.mark){return k.mark(n)}else{if(k.webkitMark){return k.webkitMark(n)}}}a.push({name:n,entryType:"mark",startTime:f(),duration:0});return}function m(p,t,n){if("undefined"===typeof(t)&&h(j)){t=j}if(k){if(k.measure){if(t){if(n){return k.measure(p,t,n)}else{return k.measure(p,t)}}else{return k.measure(p)}}else{if(k.webkitMeasure){return k.webkitMeasure(p,t,n)}}}var r=0,o=f();if(t){var s=h(t);if(s){r=s.startTime}else{if(k&&k.timing&&k.timing[t]){r=k.timing[t]-k.timing.navigationStart}else{return}}}if(n){var q=h(n);if(q){o=q.startTime}else{if(k&&k.timing&&k.timing[n]){o=k.timing[n]-k.timing.navigationStart}else{return}}}d.push({name:p,entryType:"measure",startTime:r,duration:(o-r)});return}function h(n){return c(n,g())}function c(p,o){for(i=o.length-1;i>=0;i--){var n=o[i];if(p===n.name){return n}}return undefined}function g(){if(k){if(k.getEntriesByType){return k.getEntriesByType("mark")}else{if(k.webkitGetEntriesByType){return k.webkitGetEntriesByType("mark")}}}return a}return{mark:b,measure:m,gaMarks:a,gaMeasures:d}})();LUX.ns=(Date.now?Date.now():+(new Date()));LUX.ac=[];LUX.cmd=function(a){LUX.ac.push(a)};LUX.init=function(){LUX.cmd(["init"])};LUX.send=function(){LUX.cmd(["send"])};LUX.addData=function(a,b){LUX.cmd(["addData",a,b])};LUX_ae=[];window.addEventListener("error",function(a){LUX_ae.push(a)});LUX_al=[];if("function"===typeof(PerformanceObserver)&&"function"===typeof(PerformanceLongTaskTiming)){var LongTaskObserver=new PerformanceObserver(function(c){var b=c.getEntries();for(var a=0;a<b.length;a++){var d=b[a];LUX_al.push(d)}});try{LongTaskObserver.observe({type:["longtask"]})}catch(e){}};
+      LUX.samplerate = 100;
+      window.LUX.addData('plan', '');
+      window.LUX.addData('orgName', '');
+      window.LUX.addData('groupName', '');
+    </script>
+    <script src="https://cdn.speedcurve.com/js/lux.js?id=80837559" async defer crossorigin="anonymous" nonce="ydPEacKXa9Ks+hKVIQqe0g=="></script>
+
+
+    <style>
+      .impersonate-partner {
+        border: 2px solid red;
+      }
+    </style>
+  </head>
+
+  <body   >
+    <div data-snyk-main class="l-main sidepanel__main">
+
+
+
+
+    <div class="legacy-main backdrop-neutral l-body">
+
+      <script nonce="ydPEacKXa9Ks+hKVIQqe0g==">
+        if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+          document.write('<div style="background-color:#fbf2e7;border-top:1px solid #e9af6d;border-bottom:1px solid #e9af6d;color:#a55c09;padding:12px 20px">' +
+            'Snyk no longer supports Internet Explorer, please use another browser. ' +
+            '<a href="https://support.snyk.io/hc/en-us/articles/360006120358-End-of-IE11-support-for-Snyk">'+
+              'Read our end of support announcement' +
+            '</a>.' +
+          '</div>');
+        }
+      </script>
+
+      <div class="scoped">
+        <div data-vue="global-announcements"></div>
+      </div>
+
+
+      <div id="messaging-alerts">
+      </div>
+
+          <div class="scoped">
+            <div data-vue="site-header"></div>
+          </div>
+
+      <main id="main">
+<div class="header header--strip">
+  <div class="header__content">
+    <div class="l-push-btm--md">
+      <nav class="breadcrumbs">
+        <ol class="breadcrumbs__list">
+          <li class="breadcrumbs__list-item">
+            <a class="breadcrumbs__list-item__link" href="/vuln/">Vulnerability DB</a>
+          </li>
+        </ol><!-- .breadcrumbs__list -->
+      </nav><!-- .breadcrumbs -->
+    </div>
+  </div>
+
+  <!-- Begin header test information and security score -->
+<div class="l-cols l-cols--2 l-cols--split l-cols--strip l-cols--sidebar">
+  <div class="l-col">
+      <h1 class="header__title" >Security Analysis for:<br />https://qasvus.wixsite.com/ca-marketing</h1><p class="header__lede" >Snyk’s security scan found the following vulnerabilities affecting your website. Ready to fix your vulnerabilities? Automatically find, fix, and monitor vulnerabilities for free with Snyk.</p>
+      <br />
+      <a href="/login?&amp;utm_medium&#x3D;referral&amp;utm_source&#x3D;webpagetest&amp;utm_campaign&#x3D;website-scanner&amp;cta&#x3D;sign-up&amp;loc&#x3D;banner&amp;page&#x3D;website-scanner"
+      class="link--btn link--split link--strip link--sidebar" 
+      
+      
+      
+      
+      
+      >Fix for free</a>
+
+      <div class="header__pkgInfo">
+        <table class="meta-table  meta-table--split meta-table--strip meta-table--sidebar" >
+          <tbody class="meta-table__body">
+            <tr class="meta-table__item">
+              <th class="meta-table__label" >
+                <h2>Full report</h2>
+              </th>
+              <td class="meta-table__data" ><a href="https://webpagetest.org/result/220929_AiDcK6_FDT/"  class="meta-table__link" >
+                  See on WebPageTest</a>
+              </td>
+            </tr>
+            <tr class="meta-table__item">
+              <th class="meta-table__label" >
+                <h2>Scan time</h2>
+              </th>
+              <td class="meta-table__data" >
+                  9/29/2022 <br/> 8:00:00 PM 
+              </td>
+            </tr>
+          </tbody>
+        </table>      </div>
+  </div>
+  <div class="l-col">
+        <div
+          class="heading heading--subhead">  <h1
+            class="heading__title " >
+            Webpage Security Score
+          </h1></div>
+          <h1
+            
+            class="header__title"
+            style="
+              background-color: #e33535;
+              padding: 15px;
+              margin: 15px;
+              display: block;
+              width: 85px;
+              text-align: center;"
+          >D</h1>
+          
+          <div>
+            A+ is the best score you can get.
+            <br />
+            Learn more
+            <a href="/blog/website-security-score-explained">about</a>
+            this score.
+          </div>
+          </div>
+</div>
+</div>
+
+<!-- Begin top-page CTA -->
+
+<div class="l-container">
+<div class="card card--cta">
+
+
+  <div class="card__content">
+  <div class="l-repel l-align-ver">
+    <span class="t--lg"><strong>Fix JavaScript vulnerabilities in your project with Snyk (or try the <a href="https://support.snyk.io/hc/en-us/articles/360003812538-Install-the-Snyk-CLI">free & open source CLI</a>)</strong></span>
+    <span style="display:flex; justify-content: center">
+    <a href="/login?&amp;utm_medium&#x3D;referral&amp;utm_source&#x3D;webpagetest&amp;utm_campaign&#x3D;website-scanner&amp;cta&#x3D;sign-up&amp;loc&#x3D;banner&amp;page&#x3D;website-scanner"
+    class="link--btn link--cta" 
+    
+    
+    
+    
+    
+    >Test and protect my website</a>
+   </div>
+
+  </div>
+
+</div>
+</div>
+
+
+<div class="l-cols l-cols--2">
+  <div class="l-col">
+    <h1 class="header__title" data-snyk-test="direct-vuln">JavaScript Libraries with vulnerabilities</h1>
+
+
+          <h2 data-snyk-test="direct-vuln-desc">
+            <span style="color: #9bce54">✓ </span>
+            Great job! No known versions of vulnerable JavaScript libraries were detected in this website.
+          </h2>
+
+        <br />
+        <a href="/login?&amp;utm_medium&#x3D;referral&amp;utm_source&#x3D;webpagetest&amp;utm_campaign&#x3D;website-scanner&amp;cta&#x3D;sign-up&amp;loc&#x3D;banner&amp;page&#x3D;website-scanner"
+        class="link--btn" 
+        
+        
+        
+        
+        
+        >Monitor my web application&#x27;s project dependencies</a>
+
+  </div>
+  <div class="l-col">
+    <h1 class="header__title" data-snyk-test="direct-vuln">Security headers</h1>
+    <h2 data-snyk-test="direct-vuln-desc">
+      HTTP security headers enable better browser security policies.
+    </h2>
+
+    <div>
+      <br/>
+      Successfully detected the following security headers:
+      <ul>
+          <li >
+            <span style="color: #9bce54">✓ <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">strict-transport-security</a> </span>
+          </li>
+          <li >
+            <span style="color: #9bce54">✓ <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">x-content-type-options</a> </span>
+          </li>
+      </ul>
+    </div>
+    
+  </div>
+</div>
+
+
+<!-- Begin test result data -->
+<div class="l-cols l-cols--2">
+  <div class="l-col">
+        <div > 
+          Recently-discovered vulnerabilities on the Snyk database:
+          <br /><br />
+          <table  class="table--comfortable">
+            <thead>
+              <tr class="list-vulns__header">
+                <th>
+                  Date disclosed
+                </th>
+                <th>
+                  Vulnerable library
+                </th>
+                <th>
+                  Vulnerable version detected
+                </th>
+                <th>
+                  Vulnerability
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr  ></tr>
+                <td>
+                  2020/06/11
+                </td>
+                <td>
+                  <ul class="severity-list severity-list--compact" >
+                    <li class="severity-list__item severity-list__item--high" >
+                      <span class="severity-list__item-text">H</span>
+                    </li>
+                  </ul>
+                  <span class="l-push-left--sm">
+                    <a href="https://snyk.io/vuln/npm:angular">angular</a>
+                  </span>
+                </td>
+                <td>
+                  <span  class="semver">&lt;1.8.0</span>
+                </td>
+                <td>
+                  Cross-site Scripting (XSS)
+                </td>
+                </tr>
+                <tr  ></tr>
+                <td>
+                  2020/06/07
+                </td>
+                <td>
+                  <ul class="severity-list severity-list--compact" >
+                    <li class="severity-list__item severity-list__item--medium" >
+                      <span class="severity-list__item-text">M</span>
+                    </li>
+                  </ul>
+                  <span class="l-push-left--sm">
+                    <a href="https://snyk.io/vuln/npm:angular">angular</a>
+                  </span>
+                </td>
+                <td>
+                  <span  class="semver">&lt;1.8.0</span>
+                </td>
+                <td>
+                  Cross-site Scripting (XSS)
+                </td>
+                </tr>
+                <tr  ></tr>
+                <td>
+                  2020/05/19
+                </td>
+                <td>
+                  <ul class="severity-list severity-list--compact" >
+                    <li class="severity-list__item severity-list__item--medium" >
+                      <span class="severity-list__item-text">M</span>
+                    </li>
+                  </ul>
+                  <span class="l-push-left--sm">
+                    <a href="https://snyk.io/vuln/npm:jquery">jquery</a>
+                  </span>
+                </td>
+                <td>
+                  <span  class="semver">&lt;1.9.0</span>
+                </td>
+                <td>
+                  Cross-site Scripting (XSS)
+                </td>
+                </tr>
+                <tr  ></tr>
+                <td>
+                  2020/05/11
+                </td>
+                <td>
+                  <ul class="severity-list severity-list--compact" >
+                    <li class="severity-list__item severity-list__item--medium" >
+                      <span class="severity-list__item-text">M</span>
+                    </li>
+                  </ul>
+                  <span class="l-push-left--sm">
+                    <a href="https://snyk.io/vuln/npm:buefy">buefy</a>
+                  </span>
+                </td>
+                <td>
+                  <span  class="semver">&lt;0.8.18</span>
+                </td>
+                <td>
+                  Cross-site Scripting (XSS)
+                </td>
+                </tr>
+                <tr  ></tr>
+                <td>
+                  2020/04/29
+                </td>
+                <td>
+                  <ul class="severity-list severity-list--compact" >
+                    <li class="severity-list__item severity-list__item--medium" >
+                      <span class="severity-list__item-text">M</span>
+                    </li>
+                  </ul>
+                  <span class="l-push-left--sm">
+                    <a href="https://snyk.io/vuln/npm:jquery">jquery</a>
+                  </span>
+                </td>
+                <td>
+                  <span  class="semver">&gt;&#x3D;1.2.0 &lt;3.5.0</span>
+                </td>
+                <td>
+                  Cross-site Scripting (XSS)
+                </td>
+                </tr>
+                <tr  ></tr>
+                <td>
+                  2020/04/28
+                </td>
+                <td>
+                  <ul class="severity-list severity-list--compact" >
+                    <li class="severity-list__item severity-list__item--medium" >
+                      <span class="severity-list__item-text">M</span>
+                    </li>
+                  </ul>
+                  <span class="l-push-left--sm">
+                    <a href="https://snyk.io/vuln/npm:lodash">lodash</a>
+                  </span>
+                </td>
+                <td>
+                  <span  class="semver">&lt;4.17.16</span>
+                </td>
+                <td>
+                  Prototype Pollution
+                </td>
+                </tr>
+                <tr  ></tr>
+                <td>
+                  2020/04/13
+                </td>
+                <td>
+                  <ul class="severity-list severity-list--compact" >
+                    <li class="severity-list__item severity-list__item--medium" >
+                      <span class="severity-list__item-text">M</span>
+                    </li>
+                  </ul>
+                  <span class="l-push-left--sm">
+                    <a href="https://snyk.io/vuln/npm:jquery">jquery</a>
+                  </span>
+                </td>
+                <td>
+                  <span  class="semver">&gt;&#x3D;1.0.3 &lt;3.5.0</span>
+                </td>
+                <td>
+                  Cross-site Scripting (XSS)
+                </td>
+                </tr>
+                <tr  ></tr>
+                <td>
+                  2019/07/02
+                </td>
+                <td>
+                  <ul class="severity-list severity-list--compact" >
+                    <li class="severity-list__item severity-list__item--high" >
+                      <span class="severity-list__item-text">H</span>
+                    </li>
+                  </ul>
+                  <span class="l-push-left--sm">
+                    <a href="https://snyk.io/vuln/npm:lodash">lodash</a>
+                  </span>
+                </td>
+                <td>
+                  <span  class="semver">&lt;4.17.12</span>
+                </td>
+                <td>
+                  Prototype Pollution
+                </td>
+                </tr>
+                <tr  ></tr>
+                <td>
+                  2019/02/15
+                </td>
+                <td>
+                  <ul class="severity-list severity-list--compact" >
+                    <li class="severity-list__item severity-list__item--high" >
+                      <span class="severity-list__item-text">H</span>
+                    </li>
+                  </ul>
+                  <span class="l-push-left--sm">
+                    <a href="https://snyk.io/vuln/npm:bootstrap">lodash</a>
+                  </span>
+                </td>
+                <td>
+                  <span  class="semver">&lt;3.4.1,&gt;&#x3D;4.0.0 &lt;4.3.1	</span>
+                </td>
+                <td>
+                  Cross-site Scripting (XSS)
+                </td>
+                </tr>
+            </tbody>
+          </table>        </div>
+    <div>
+      <br />
+      New vulnerabilities are continuously found for
+      <a href="https://snyk.io/vuln/npm:jquery">jQuery</a>,
+      <a href="https://snyk.io/vuln/npm:lodash">lodash</a>,
+      <a href="https://snyk.io/vuln/npm:angular">Angular</a> and other libraries.
+      <br />
+      Monitor these libraries to protect your web application.
+      <br /><br />
+      Stay up to date on CVEs by <a href="https://snyk.io/login?utm_source=website-scanner&utm_campaign=website-scanner&cta=sign-up&loc=banner&page=website-scanner">connecting your project to Snyk to receive automated
+        notifications & fixes</a>.
+    </div>
+  </div>
+  <div class="l-col">
+
+
+      <div>
+        <span style="color: #e33535">❌ </span>
+        The following security headers are missing from the website: 
+      </div>        <div id="issue-" class="issue issue--severity-medium"
+        data-snyk-issue
+        data-snyk-issue-type="vuln"
+        data-snyk-issue-severity="medium"
+        data-snyk-issue-runtime="">  <div class="label label--medium">
+            <span class="label__text" >medium severity</span>
+          </div>
+        
+        <div class="issue__heading">
+          <div
+            class="heading">    <svg width="24" height="24" viewBox="0 0 24 24" role="img">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+          </svg>
+            <h1
+              class="heading__title " >
+              X Frame Options
+            </h1></div>
+        </div>
+        
+        <div class="issue__content">
+          <div class="prose prose--markdown">
+            <!--  Issue Description -->
+              <div v-pre >
+                <p>Clickjacking protection: deny - no rendering within a frame, sameorigin - no rendering if origin mismatch, allow-from - allow from specified location, allowall - non-standard, allow from any location</p>
+        
+              </div>
+          </div>
+        
+          <div class="issue__cta" >
+            <div class="l-push-right--sm">
+              <span>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options"
+                class="" 
+                
+                
+                
+                
+                
+                >X Frame Options documentation</a>
+              </span>
+            </div>
+          </div>
+        </div>
+        </div>        <div id="issue-" class="issue issue--severity-high"
+        data-snyk-issue
+        data-snyk-issue-type="vuln"
+        data-snyk-issue-severity="high"
+        data-snyk-issue-runtime="">  <div class="label label--high">
+            <span class="label__text" >high severity</span>
+          </div>
+        
+        <div class="issue__heading">
+          <div
+            class="heading">    <svg width="24" height="24" viewBox="0 0 24 24" role="img">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+          </svg>
+            <h1
+              class="heading__title " >
+              Content Security Policy
+            </h1></div>
+        </div>
+        
+        <div class="issue__content">
+          <div class="prose prose--markdown">
+            <!--  Issue Description -->
+              <div v-pre >
+                <p>A computer security standard introduced to prevent cross-site scripting (XSS), clickjacking and other code injection attacks resulting from execution of malicious content in the trusted web page context</p>
+        
+              </div>
+          </div>
+        
+          <div class="issue__cta" >
+            <div class="l-push-right--sm">
+              <span>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP"
+                class="" 
+                
+                
+                
+                
+                
+                >Content Security Policy documentation</a>
+              </span>
+            </div>
+          </div>
+        </div>
+        </div>        <div id="issue-" class="issue issue--severity-low"
+        data-snyk-issue
+        data-snyk-issue-type="vuln"
+        data-snyk-issue-severity="low"
+        data-snyk-issue-runtime="">  <div class="label label--low">
+            <span class="label__text" >low severity</span>
+          </div>
+        
+        <div class="issue__heading">
+          <div
+            class="heading">    <svg width="24" height="24" viewBox="0 0 24 24" role="img">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+          </svg>
+            <h1
+              class="heading__title " >
+              X XSS Protection
+            </h1></div>
+        </div>
+        
+        <div class="issue__content">
+          <div class="prose prose--markdown">
+            <!--  Issue Description -->
+              <div v-pre >
+                <p>A Cross-site scripting filter</p>
+        
+              </div>
+          </div>
+        
+          <div class="issue__cta" >
+            <div class="l-push-right--sm">
+              <span>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection"
+                class="" 
+                
+                
+                
+                
+                
+                >X XSS Protection documentation</a>
+              </span>
+            </div>
+          </div>
+        </div>
+        </div>
+  </div>
+</div>
+
+<!-- Begin report and share new vulnerability -->
+<div class="l-cols l-cols--2">
+  <div class="l-col">
+    <div class="u--push-right">
+      <ul class="list-social list-social--m">
+        <li class="list-social__item">
+          <a href="https://twitter.com/intent/tweet/?text=Snyk%20%7C%20Security Analysis for:&amp;url=https://snyk.io?utm_source=vulnerabilitydb" class="list-social__link" target="_blank" rel="noopener noreferrer">
+            <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+      <path d="M22 5.0686a7.7621 7.7621 0 0 1-2.3567.6946c.8472-.546 1.4978-1.4105 1.8042-2.4406-.7928.5055-1.671.8727-2.6056 1.0705C18.0933 3.5358 17.0269 3 15.8469 3c-2.2662 0-4.1035 1.9751-4.1035 4.4113 0 .3458.0364.6825.1063 1.0054-3.4102-.184-6.4336-1.9403-8.4574-4.6092-.3532.6515-.5555 1.4093-.5555 2.2178 0 1.5304.7244 2.8807 1.8254 3.6718-.6727-.0229-1.3053-.2213-1.8586-.5517-.0003.0184-.0003.0368-.0003.0554 0 2.1374 1.4144 3.9204 3.2915 4.3256a3.84 3.84 0 0 1-1.081.1547 3.8208 3.8208 0 0 1-.772-.0791c.522 1.7526 2.0374 3.028 3.833 3.0637-1.4043 1.1831-3.1736 1.8884-5.096 1.8884A7.771 7.771 0 0 1 2 18.4925c1.8159 1.2516 3.9727 1.9819 6.29 1.9819 7.5472 0 11.6744-6.722 11.6744-12.5515 0-.1913-.004-.3815-.0119-.5707.8017-.622 1.4974-1.399 2.0475-2.2836"/>
+    </svg>
+          </a>
+        </li>
+        <li class="list-social__item">
+          <a href="https://facebook.com/sharer/sharer.php?u=https://snyk.io?utm_source=vulnerabilitydb" class="list-social__link" target="_blank" rel="noopener noreferrer">
+          <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+      <path d="M3 2c-.7 0-1 .3-1 1v18c0 .7.3 1 1 1h9.68v-7.75h-2.6v-3.01h2.6V9c0-2.58 1.58-3.99 3.88-3.99 1.1 0 2.06.08 2.33.12v2.7h-1.6c-1.25 0-1.49.6-1.49 1.47v1.93h2.99l-.4 3.01H15.8V22H21c.7 0 1-.3 1-1V3c0-.7-.3-1-1-1H3z"/>
+    </svg>
+          </a>
+        </li>
+        <li class="list-social__item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://snyk.io?utm_source=vulnerabilitydb&amp;title=Snyk%20%7C%20Security Analysis for:&amp;source=https://snyk.io" class="list-social__link" target="_blank" rel="noopener noreferrer">
+          <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+      <path d="M3 2c-.7 0-1 .3-1 1v18c0 .7.3 1 1 1h18c.7 0 1-.3 1-1V3c0-.7-.3-1-1-1H3zm16.3 16.89h-2.97v-4.67c0-1.12-.02-2.55-1.54-2.55-1.54 0-1.78 1.21-1.78 2.47v4.75h-2.96v-9.6h2.84v1.3h.04a3.11 3.11 0 0 1 2.81-1.54c3 0 3.56 1.99 3.56 4.57v5.27zM5.2 9.3h3v9.6h-3V9.3zm1.5-1.33c-.95 0-1.72-.77-1.72-1.73a1.73 1.73 0 0 1 3.44 0c0 .96-.77 1.73-1.71 1.73z"/>
+    </svg>
+          </a>
+        </li>
+        <li class="list-social__item">
+          <a href="mailto:?subject=Snyk&amp;body=Snyk%20%7C%20Security Analysis for:%20https://snyk.io?utm_source=vulnerabilitydb" class="list-social__link" target="_blank" rel="noopener noreferrer">
+          <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+      <path d="M20 4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2h16zm0 4V6l-8 5-8-5v2l8 5 8-5z"/>
+    </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="l-col">
+    <div class="l-align-right l-push-btm--xl">
+      <a href="https://snyk.io/vulnerability-disclosure" class="nav__list__item__link">Report a new vulnerability</a>
+    </div>
+  </div>
+</div>
+</main>
+    </div>
+
+    <style nonce="ydPEacKXa9Ks+hKVIQqe0g==">
+      .nav--footer .list-social__link {
+        color: #c3c2cb;
+      }
+    </style>
+
+
+          <footer role="contentinfo" id="footer" class="site-footer" >
+          
+            <div class="site-footer__top">
+                <div class="row">
+                  <div>
+                    <a class="brand" href="https://snyk.io/" title="Snyk">
+                      <img src="https://res.cloudinary.com/snyk/image/upload/v1533761770/logo-1_wtob68.svg" alt="Snyk">
+                    </a>
+                    <div class="text-block">
+                      <span class="title">Ready to get started?</span>
+                      <span class="text">Snyk helps you use open source and stay secure.</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="links-box">
+                      <a href="https://snyk.io/login" class="btn btn--stretch">
+                        <span class="btn-text">
+                          Sign up for free
+                          <span class="btn-icon">
+                            <svg width="5" height="9" viewBox="0 0 24 24">
+            <path d="M7 6l6 6-6 6 2 2 8-8-8-8z"/>
+          </svg>
+                          </span>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          
+            <div class="nav nav--footer">
+          
+              <div class="nav--footer__groups">
+                <nav class="nav__group">
+                  <h2 class="nav__list__item__heading">Product</h2>
+                  <ul class="nav__list">
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/partners" class="nav__list__item__link">Partners</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/features" class="nav__list__item__link">Features</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/plans" class="nav__list__item__link">Pricing</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/test#github-repo" class="nav__list__item__link">Test with Github</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/test#local-project" class="nav__list__item__link">Test with CLI</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.statuspage.io/" class="nav__list__item__link">API Status</a>
+                    </li>
+                  </ul>
+                </nav>
+                <nav class="nav__group">
+                  <h2 class="nav__list__item__heading">Resources</h2>
+                  <ul class="nav__list">
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/vuln" class="nav__list__item__link">Vulnerability DB</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/blog" class="nav__list__item__link">Blog</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/docs" class="nav__list__item__link">Documentation</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://security.snyk.io/disclosed-vulnerabilities" class="nav__list__item__link">Disclosed Vulnerabilities</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://support.snyk.io/" class="nav__list__item__link">FAQs</a>
+                    </li>
+                  </ul>
+                </nav>
+                <nav class="nav__group">
+                  <h2 class="nav__list__item__heading">Company</h2>
+                  <ul class="nav__list">
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/about" class="nav__list__item__link">About</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/jobs" class="nav__list__item__link">Jobs</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="mailto:contact@snyk.io" class="nav__list__item__link">Contact</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/policies" class="nav__list__item__link">Policies</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://github.com/snyk/press-kit" class="nav__list__item__link">Press Kit</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/events" class="nav__list__item__link">Events</a>
+                    </li>
+                  </ul>
+                </nav>
+                <nav class="nav__group">
+                  <h2 class="nav__list__item__heading">Contact Us</h2>
+                  <ul class="nav__list">
+                    <li class="nav__list__item">
+                      <a href="mailto:support@snyk.io" class="nav__list__item__link">Support</a>
+                    </li>
+                    <li class="nav__list__item">
+                      <a href="https://snyk.io/vulnerability-disclosure" class="nav__list__item__link">Report a new vuln</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+          
+              <nav class="nav__social">
+                <h2 class="nav__list__item__label">Find us online</h2>
+                <ul class="list-social list-social--l">
+                  <li class="list-social__item">
+                    <a class="list-social__link" href="https://twitter.com/snyksec" title="Twitter">
+                      <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+                  <path d="M22 5.0686a7.7621 7.7621 0 0 1-2.3567.6946c.8472-.546 1.4978-1.4105 1.8042-2.4406-.7928.5055-1.671.8727-2.6056 1.0705C18.0933 3.5358 17.0269 3 15.8469 3c-2.2662 0-4.1035 1.9751-4.1035 4.4113 0 .3458.0364.6825.1063 1.0054-3.4102-.184-6.4336-1.9403-8.4574-4.6092-.3532.6515-.5555 1.4093-.5555 2.2178 0 1.5304.7244 2.8807 1.8254 3.6718-.6727-.0229-1.3053-.2213-1.8586-.5517-.0003.0184-.0003.0368-.0003.0554 0 2.1374 1.4144 3.9204 3.2915 4.3256a3.84 3.84 0 0 1-1.081.1547 3.8208 3.8208 0 0 1-.772-.0791c.522 1.7526 2.0374 3.028 3.833 3.0637-1.4043 1.1831-3.1736 1.8884-5.096 1.8884A7.771 7.771 0 0 1 2 18.4925c1.8159 1.2516 3.9727 1.9819 6.29 1.9819 7.5472 0 11.6744-6.722 11.6744-12.5515 0-.1913-.004-.3815-.0119-.5707.8017-.622 1.4974-1.399 2.0475-2.2836"/>
+                </svg>
+                    </a>
+                  </li>
+                  <li class="list-social__item">
+                    <a class="list-social__link" href="https://www.youtube.com/channel/UCh4dJzctb0NhSibjU-e2P6w" title="Youtube">
+                      <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+                  <path d="M9.93 14.58V9l5.4 2.8-5.4 2.78zM21.8 8.03s-.2-1.37-.8-1.98c-.75-.79-1.6-.8-2-.84-2.8-.2-7-.2-7-.2s-4.2 0-7 .2c-.38.05-1.24.05-2 .84-.6.6-.79 1.98-.79 1.98S2 9.63 2 11.25v1.5c0 1.62.2 3.23.2 3.23s.2 1.37.8 1.97c.75.8 1.75.77 2.2.85 1.6.15 6.8.2 6.8.2s4.2 0 7-.2c.38-.05 1.24-.06 2-.85.6-.6.79-1.97.79-1.97s.2-1.61.2-3.22v-1.51c0-1.61-.2-3.22-.2-3.22z"/>
+                </svg>
+                    </a>
+                  </li>
+                  <li class="list-social__item">
+                    <a class="list-social__link" href="https://www.facebook.com/snyksec" title="Facebook">
+                      <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+                  <path d="M3 2c-.7 0-1 .3-1 1v18c0 .7.3 1 1 1h9.68v-7.75h-2.6v-3.01h2.6V9c0-2.58 1.58-3.99 3.88-3.99 1.1 0 2.06.08 2.33.12v2.7h-1.6c-1.25 0-1.49.6-1.49 1.47v1.93h2.99l-.4 3.01H15.8V22H21c.7 0 1-.3 1-1V3c0-.7-.3-1-1-1H3z"/>
+                </svg>
+                    </a>
+                  </li>
+                  <li class="list-social__item">
+                    <a class="list-social__link" href="https://www.linkedin.com/company/snyk" title="LinkedIn">
+                      <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+                  <path d="M3 2c-.7 0-1 .3-1 1v18c0 .7.3 1 1 1h18c.7 0 1-.3 1-1V3c0-.7-.3-1-1-1H3zm16.3 16.89h-2.97v-4.67c0-1.12-.02-2.55-1.54-2.55-1.54 0-1.78 1.21-1.78 2.47v4.75h-2.96v-9.6h2.84v1.3h.04a3.11 3.11 0 0 1 2.81-1.54c3 0 3.56 1.99 3.56 4.57v5.27zM5.2 9.3h3v9.6h-3V9.3zm1.5-1.33c-.95 0-1.72-.77-1.72-1.73a1.73 1.73 0 0 1 3.44 0c0 .96-.77 1.73-1.71 1.73z"/>
+                </svg>
+                    </a>
+                  </li>
+                </ul>
+          
+                <h2 class="nav__list__item__label">Track our development</h2>
+                <ul class="list-social list-social--l">
+                  <li class="list-social__item">
+                    <a class="list-social__link" href="https://github.com/Snyk/" title="Github">
+                      <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+                  <path d="M12 2C6.48 2 2 6.59 2 12.25c0 4.53 2.87 8.38 6.84 9.73.5.1.68-.22.68-.5l-.01-1.74c-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.9-.64.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.34 1.12 2.91.86a2.2 2.2 0 0 1 .64-1.37c-2.23-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.75-.1-.26-.45-1.3.1-2.72 0 0 .84-.27 2.75 1.05a9.34 9.34 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72a4.01 4.01 0 0 1 1.03 2.75c0 3.94-2.34 4.8-4.57 5.06.36.31.68.94.68 1.9l-.01 2.8c0 .28.18.6.69.5A10.24 10.24 0 0 0 22 12.25C22 6.6 17.52 2 12 2"/>
+                </svg>
+                    </a>
+                  </li>
+                  <li class="list-social__item">
+                    <a class="list-social__link" href="https://www.npmjs.com/snyk" title="NPM">
+                      <svg width="40" height="40" viewBox="0 0 24 24" role="img">
+                  <path d="M3 2h18c.7 0 1 .3 1 1v18c0 .7-.3 1-1 1H3c-.7 0-1-.3-1-1V3c0-.7.3-1 1-1zm10 17v-9h3v9h3V6H6v13h7z"/>
+                </svg>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+          
+            </div>
+          
+            <div class="l-container">
+              <svg width="68" height="35" viewBox="0 0 24 24" role="img">
+            <path d="M3.687 14.529c-.673 0-1.22-.116-1.687-.34l.142-1.075a3.57 3.57 0 0 0 1.519.359c.34 0 .565-.116.565-.321 0-.59-2.128-.449-2.128-1.99 0-.985.905-1.504 2.039-1.504.565 0 1.148.153 1.526.287l-.153 1.057c-.397-.153-.935-.296-1.384-.296-.277 0-.502.098-.502.277 0 .582 2.174.466 2.174 1.97 0 1.001-.89 1.576-2.11 1.576zm5.885-.1v-2.662c0-.609-.27-.896-.782-.896-.25 0-.512.07-.692.18v3.377h-1.58V9.815l1.546-.127-.038.754h.053a1.963 1.963 0 0 1 1.571-.788c.808 0 1.507.5 1.507 1.684v3.09H9.572zm10.434 0l-1.264-2.196h-.128v2.195h-1.579V8.964l1.58-2.464v5.099c.314-.385 1.373-1.844 1.373-1.844h1.948l-1.848 1.952L22 14.432h-1.994v-.003zM14.99 9.77l-.647 2.105c-.127.396-.25 1.124-.25 1.124s-.098-.755-.233-1.15l-.692-2.08h-1.77l1.924 4.659c-.262.62-.666 1.142-1.205 1.142-.097 0-.194-.004-.288-.015l-.628.97c.198.112.576.228 1.024.228 1.168 0 1.95-.944 2.496-2.34l1.833-4.643H14.99z"/>
+          </svg>
+          
+              <small class="subhead">© 2022 Snyk Ltd.</small>
+            </div>
+          
+          </footer>
+
+    <div class="fullpage-spinner">
+      <div class="fullpage-spinner__spinner">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    </div>
+
+    <!-- #slidepanel-content -->
+      <div data-snyk-sidepanel class="sidepanel__panel">
+        
+      </div>
+
+    <script nonce="ydPEacKXa9Ks+hKVIQqe0g==">
+      // Adds class of js to the html tag if JS is enabled
+      document.getElementsByTagName('html')[0].className += ' js';
+    </script>
+
+    <script nonce="ydPEacKXa9Ks+hKVIQqe0g==" src="https://js.sentry-cdn.com/db2c7b7ca7654a14b47912ee3ef4a2c5.min.js" crossorigin="anonymous"></script>
+    <script nonce="ydPEacKXa9Ks+hKVIQqe0g==">
+      Sentry.init({
+        environment: 'prod',
+        release: 'b71888bf50d5e20174dcb50af10c49f53d0cb057',
+        allowUrls: [
+          /https?:\/\/((app|static)\.)?([a-z]+\.)?snyk\.io/,
+          'localhost'
+        ],
+        ignoreErrors: [
+          'ResizeObserver loop limit exceeded',
+          'Boomerang is not defined',
+          'can\'t redefine non-configurable property "availWidth"',
+          'Identifier \'originalPrompt\' has already been declared',
+          'Non-Error promise rejection captured with value: Object Not Found Matching Id'
+        ]
+      });
+    </script>
+
+  <script nonce="ydPEacKXa9Ks+hKVIQqe0g==" async src="https://static.snyk.io/prod/static-assets/js/build/app.min.ed87cf430400eeb1e54431af2db272af.md5.js"></script>
+    <script nonce="ydPEacKXa9Ks+hKVIQqe0g==" async src="https://static.snyk.io/prod/static-assets/js/build/frontend/minimal.138a3ddf5cc772322fab43092e557bf7.md5.js"></script>
+
+  <script nonce="ydPEacKXa9Ks+hKVIQqe0g=="  id="trd-flame-load"> TRD_ACC_ID = 2025; (function (w, d) { function go() { var trdti = setInterval(function () { if (document.readyState === "complete") { var bi = document.createElement("script"); bi.type = "text/javascript"; bi.async = true; bi.src = "https://assets.trendemon.com/tag/trends.min.js"; bi.id = "trdflame"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(bi, s); clearInterval(trdti); } }, 500); }; go(); }(window, document));
+  </script>
+  </body>
+</html>
