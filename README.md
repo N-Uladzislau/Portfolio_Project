@@ -9,12 +9,8 @@ C --> Y(Security Testing) --> F{Portfolio}
 B --> U(Test Plan) --> F{Portfolio}
 ```
 
+```diff
+-> Front-end - **Python** and **Selenium Web Driver**
 
-> Front-end - **`#RRGGBB`Python** and **Selenium Web Driver**
-
-> Rest-API - **Java-Script** and **Postman**
-
-#RRGGBB
-###
- 
-#0969DA
++> Rest-API - **Java-Script** and **Postman**
+```
