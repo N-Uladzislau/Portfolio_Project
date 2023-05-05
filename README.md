@@ -15,8 +15,8 @@ B --> U(Test Plan) --> F{Portfolio}
 +> Rest-API - **Java-Script** and **Postman**
 
 ```
-$${\color{lightblue}Light \soace Blue}$$
+$${\color{lightblue}Light \**Python** and **Selenium Web Driver**e}$$
 
 
-## $${\color{blue} Front-end - **Python** and **Selenium Web Driver**}$$
+## $${\color{blue} Front-end - }$$
 
