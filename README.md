@@ -11,3 +11,10 @@ B --> U(Test Plan) --> F{Portfolio}
 $${\color{lightblue}FRONT-END\space **PYTHON**\space and \space **SELENIUM \space WEB\space DRIVER**\space  }$$
 
 $${\color{lightgreen} REST-API \space JAVA-SCRIPT \space POSTMAN }$$
+
+# Languages and Tools 
+![JavaScipt](https://img.shields.io/badge/-JavaScript-090909?style=for-the-badge&logo=JavaScript&logoColor=yellow)
+![Python](https://img.shields.io/badge/-Python-090909?style=for-the-badge&logo=Python&logoColor=blue)
+![Postman](https://img.shields.io/badge/-postman-090909?style=for-the-badge&logo=postman&logoColor=orange)
+![HTML](https://img.shields.io/badge/-HTML5-090909?style=for-the-badge&logo=HTML5&logoColor=orange)
+![selemiun](https://img.shields.io/badge/-selenium-090909?style=for-the-badge&logo=selenium&logoColor=darkred)
