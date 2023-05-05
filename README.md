@@ -14,7 +14,7 @@ B --> U(Test Plan) --> F{Portfolio}
 
 > Rest-API - **Java-Script** and **Postman**
 
-`#RRGGBB`
+#RRGGBB
 ###
  
 #0969DA
