@@ -24,4 +24,5 @@ $${\color{lightgreen} REST-API \space JAVA-SCRIPT \space POSTMAN }$$
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-090909?style=for-the-badge&logo=LinkedIn&logoColor=blue)](https://www.linkedin.com/in/n-uladzislau/)
 [![Gmail](https://img.shields.io/badge/-Email-090909?style=for-the-badge&logo=Gmail&logoColor=rd)](mailto:uladzislaunovik7@gmail.com)
 
-[Allure Report](https://github.com/N-Uladzislau/Portfolio_Project/blob/main/Allure%20Reports/Allure_report.png)
+[Allure Report 1] (https://github.com/N-Uladzislau/Portfolio_Project/blob/main/Allure%20Reports/Allure_report.png)
+[Allure Report 2] (https://github.com/N-Uladzislau/Portfolio_Project/blob/main/Allure%20Reports/allure_report_1.png)
