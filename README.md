@@ -8,15 +8,6 @@ C --> R(Performance Testing) --> F{Portfolio}
 C --> Y(Security Testing) --> F{Portfolio}
 B --> U(Test Plan) --> F{Portfolio}
 ```
-
-```diff
-@@>
-
-+> Rest-API - **Java-Script** and **Postman**
-
-```
 $${\color{lightblue}Front-End\space **Python**\space and \space **Selenium\space Web\space Driver**\space  }$$
 
-
-## $${\color{blue} Front-end - }$$
-
+$${\color{lightgreen} Rest-API \space Java-Script \space Postman }$$
