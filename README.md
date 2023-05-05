@@ -10,4 +10,5 @@ B --> U(Test Plan) --> F{Portfolio}
 ```
 
 
-# Front end was implemented with python and selenium 
+### Front end was implemented with **Python** and **Selenium Web Driver**
+ 
