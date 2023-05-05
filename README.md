@@ -30,3 +30,13 @@ $${\color{lightgreen} REST-API \space JAVA-SCRIPT \space POSTMAN }$$
 
 [HTML Report ](https://github.com/N-Uladzislau/Portfolio_Project/blob/main/HtmlReports/TestResults___main__.Chrome_CA_Marketing_2022-10-07_18-05-02.html)
 
+### **Performance Testing**
+[GTmetrix](https://github.com/N-Uladzislau/Portfolio_Project/blob/main/Performance%20Testing%20CA-Marketing/GTMetrix%20Performance%20Report%20CA-Marketing/GTmetrix-report-qasvus.wixsite.com-20220929T121647-xpDzQNa6.pdf)
+
+[Google LightHouse](https://github.com/N-Uladzislau/Portfolio_Project/blob/main/Performance%20Testing%20CA-Marketing/Google%20Lighthouse%20Performance%20Report%20CA-Marketing/Google%20Lighthouse%20Performance%20Report%20CA-Marketing.pdf)
+
+[Test Plan](https://github.com/N-Uladzislau/Portfolio_Project/blob/main/Test%20Plan(final%20project).pdf)
+
+[Test Cases](https://github.com/N-Uladzislau/Portfolio_Project/blob/main/Manual%20Testing%20CA-Marketing.xlsx)
+
+
