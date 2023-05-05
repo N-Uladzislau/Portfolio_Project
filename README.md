@@ -10,7 +10,7 @@ B --> U(Test Plan) --> F{Portfolio}
 ```
 
 ```diff
-@@> Front-end - **Python** and **Selenium Web Driver**
+@@>
 
 +> Rest-API - **Java-Script** and **Postman**
 
@@ -18,5 +18,5 @@ B --> U(Test Plan) --> F{Portfolio}
 $${\color{lightblue}Light \soace Blue}$$
 
 
-$${\color{blue}Blue}$$
+$${\color{blue} Front-end - **Python** and **Selenium Web Driver**}$$
 
