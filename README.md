@@ -12,6 +12,6 @@ B --> U(Test Plan) --> F{Portfolio}
 
 > Front-end **Python** and **Selenium Web Driver**
 
-> Rest-API **Java-Script"" and **Postman**
+> Rest-API **Java-Script** and **Postman**
 ###
  
