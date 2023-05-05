@@ -8,6 +8,6 @@ C --> R(Performance Testing) --> F{Portfolio}
 C --> Y(Security Testing) --> F{Portfolio}
 B --> U(Test Plan) --> F{Portfolio}
 ```
-$${\color{lightblue}Front-End\space **Python**\space and \space **Selenium\space Web\space Driver**\space  }$$
+$${\color{lightblue}FRONT-END\space **PYTHON**\space and \space **SELENIUM\space WEB\space DRIVER**\space  }$$
 
-$${\color{lightgreen} Rest-API \space Java-Script \space Postman }$$
+$${\color{lightgreen} REST-API \space JAVA-SCRIPT \space POSTMAN }$$
