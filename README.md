@@ -18,3 +18,9 @@ $${\color{lightgreen} REST-API \space JAVA-SCRIPT \space POSTMAN }$$
 ![Postman](https://img.shields.io/badge/-postman-090909?style=for-the-badge&logo=postman&logoColor=orange)
 ![HTML](https://img.shields.io/badge/-HTML5-090909?style=for-the-badge&logo=HTML5&logoColor=orange)
 ![selemiun](https://img.shields.io/badge/-selenium-090909?style=for-the-badge&logo=selenium&logoColor=darkred)
+
+
+### Connect with me : 
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-090909?style=for-the-badge&logo=LinkedIn&logoColor=blue)](https://www.linkedin.com/in/n-uladzislau/)
+[![Gmail](https://img.shields.io/badge/-Email-090909?style=for-the-badge&logo=Gmail&logoColor=rd)](mailto:uladzislaunovik7@gmail.com)
+[![Facebook](https://img.shields.io/badge/-Facebook-090909?style=for-the-badge&logo=Facebook&logoColor=rd)](https://www.facebook.com/n0vka/)
