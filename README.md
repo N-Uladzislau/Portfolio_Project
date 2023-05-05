@@ -1,4 +1,4 @@
-"Portfolio_Project" for __California Marketing Group__
+"Portfolio_Project" for _California Marketing Group_
 ```mermaid
 graph LR
 A[Project] --> B(Documentation) --> C(Test-Cases)
