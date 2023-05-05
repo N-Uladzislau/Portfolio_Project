@@ -2,7 +2,8 @@
 ```mermaid
 graph LR
 A[Square Rect] --> B(Front-end)
-A --> C(Round Rect)
+A --> C(Rest-API)
 B --> D{Portfolio}
-C --> D
+C --> D(Test-Cases)
+D --> F(Documentation)
 ```
